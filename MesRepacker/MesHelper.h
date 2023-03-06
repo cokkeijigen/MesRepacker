@@ -21,7 +21,7 @@ public:
 	void static textOutput(FILE* fp, std::string& str, int pos, int count) {
 		//if (!ftell(fp))	fputs("#UseCodePage: 936\n\n", fp);
 		fprintf(fp, "#0x%x\n", pos);
-		std::string mark("¡ï¡ò  " + std::to_string(count) + "  ¡ò¡ï");
+		std::string mark("Â¡Ã¯Â¡Ã²  " + std::to_string(count) + "  Â¡Ã²Â¡Ã¯");
 		mark.assign(gbk2utf8((char*)mark.c_str()));
 		output(fp, std::string(str).insert(0, std::string(mark).append("//")));
 		output(fp, std::string(str).insert(0, std::string(mark)));
@@ -56,8 +56,8 @@ protected:
 		int offset = -1;
 		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++)
 			if ((
-				(head_t = this->getHeadt((offset = this->offset * 6 + 4))) == (*iter)->head_t // dc3¡¢dc4
-				|| (head_t = this->getHeadt((offset = this->offset * 4 + 4))) == (*iter)->head_t // dc1¡¢dc2
+				(head_t = this->getHeadt((offset = this->offset * 6 + 4))) == (*iter)->head_t // dc3Â¡Â¢dc4
+				|| (head_t = this->getHeadt((offset = this->offset * 4 + 4))) == (*iter)->head_t // dc1Â¡Â¢dc2
 				) && (this->conf = *iter)) break;
 		if (this->conf) {
 			this->head_t = head_t;
@@ -253,7 +253,7 @@ public:
 				tmp = new byte[len];
 				*tmp = (*iter).key;
 				memcpy(tmp + 1, text.c_str(), strlen(text.c_str()) + 1);
-				if (!this->conf->decstr.with((*iter).key)){
+				if (this->conf->decstr.with((*iter).key)){
 					for (int i = 1; i < len - 1; i++) tmp[i] -= 0x20;
 				}
 			}
