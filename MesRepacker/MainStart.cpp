@@ -66,8 +66,8 @@ void OnHandleFiles(char* files) {
 }
 
 void test() {
-	// return;
-	// OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc4_text");
+	//return;
+	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc4_text");
 }
 
 int main(int argc, char* argv[]) {
