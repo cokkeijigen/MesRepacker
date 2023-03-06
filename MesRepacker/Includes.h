@@ -1,0 +1,16 @@
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <Windows.h>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <filesystem>
+#include "StringHelper.h"
+#include "TextMapHelper.h"
+#include "ReadBuffer.h"
+#include "MesConf.h"
+#include "MesHelper.h"
