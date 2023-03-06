@@ -271,7 +271,7 @@ public:
 	}
 
 	void destroy() {
+		if (this->textReadBuffer) delete this->textReadBuffer;
 		MesHelper::destroy();
-		if (this->textReadBuffer) delete[] this->textReadBuffer;
 	}
 };

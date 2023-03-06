@@ -108,7 +108,7 @@ public:
 	~TextReadBuffer() {
 		if (!this->textMapHelper) return;
 		this->textMapHelper->clear();
-		delete[] this->textMapHelper; 
+		delete this->textMapHelper; 
 	}
 
 	void init() {
