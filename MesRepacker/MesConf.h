@@ -4,14 +4,12 @@ struct keysection {
 	byte start = 0;
 	byte end = 0;
 	bool with(byte key) {
-		if (start == end && start == 0xFF)
-			return false;
-		return key >= start && key <= end;
+		return ((!(start == end && start == 0xFF)) && (key >= start && key <= end));
 	}
 };
 
 struct mesconf {
-	short head_t;
+	uint16_t head_t;
 	char name[10];
 	keysection uint8x2;
 	keysection uint8str;
@@ -27,10 +25,21 @@ void initConf() {
 
 	mesConfigs.push_back(
 		new mesconf{
+			0x6331, "dcbs",
+			{0x00, 0x2B},
+			{0xFF, 0xFF}, // 0xFF占位
+			{0x2C, 0x48},
+			{0x49, 0x4C},
+			{0x4D, 0xFF},
+			0x00 // 占位
+		});
+
+	mesConfigs.push_back(
+		new mesconf{
 			0x6C31, "dc2bs",
 			{0x00, 0x2B},
-			{0x32, 0x4C},
 			{0x2C, 0x31},
+			{0x32, 0x4C},
 			{0x4D, 0x50},
 			{0x51, 0xFF},
 			0x00 // 占位
@@ -38,9 +47,20 @@ void initConf() {
 
 	mesConfigs.push_back(
 		new mesconf{
+			0x729D, "dc2dm",
+			{0x00, 0x29},
+			{0x2A, 0x31},
+			{0x32, 0x4C},
+			{0x4D, 0x50},
+			{0x51, 0xFF},
+			0x44
+		});
+
+	mesConfigs.push_back(
+		new mesconf{
 			0x6638, "dc2fy2",
 			{0x00, 0x2E},
-			{0xFF, 0xFF}, // 不存在uint8str，0xFF占位
+			{0xFF, 0xFF}, // 0xFF占位
 			{0x2F, 0x4B},
 			{0x4C, 0x4F},
 			{0x50, 0xFF},
@@ -126,7 +146,7 @@ void initConf() {
 	
 	mesConfigs.push_back(
 		new mesconf{
-			(short)0x9FA0, "dc3wy",
+			0x9FA0, "dc3wy",
 			{0x00, 0x38},
 			{0x39, 0x41},
 			{0x42, 0x5F},
@@ -137,7 +157,7 @@ void initConf() {
 
 	mesConfigs.push_back(
 		new mesconf{
-			(short)0xA8A5, "dc3dd",
+			0xA8A5, "dc3dd",
 			{0x00, 0x38},
 			{0x39, 0x43},
 			{0x44, 0x62},
@@ -148,7 +168,7 @@ void initConf() {
 
 	mesConfigs.push_back(
 		new mesconf{
-			(short)0xB6AA, "dc4",
+			0xB6AA, "dc4",
 			{0x00, 0x3A},
 			{0x3B, 0x47},
 			{0x48, 0x68},

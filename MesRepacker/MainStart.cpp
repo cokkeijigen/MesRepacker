@@ -39,13 +39,14 @@ void StartHandleRepack(std::string textfile) {
 bool IsRepack(std::string path) {
 	std::string mespath(path + "\\.MesRepacker");
 	if (std::filesystem::exists(mespath) && !std::filesystem::is_directory(mespath)) {
-		std::ifstream ifs(mespath, std::ios::in);
-		while (std::getline(ifs, mespath)) if (mespath.size() > 1) break;
+		std::ifstream conf(mespath, std::ios::in);
+		while (std::getline(conf, mespath)) if (mespath.size() > 1) break;
 		if (!mesRepacker) mesRepacker = new MesRepacker(mesConfigs, mespath);
 		for (auto& i : std::filesystem::directory_iterator(path)) {
 			if (i.path().string().find(".txt") == -1) continue;
 			StartHandleRepack(i.path().string());
 		}
+		conf.close();
 		return true;
 	}
 	return false;
@@ -67,7 +68,8 @@ void OnHandleFiles(char* files) {
 
 void test() {
 	return;
-	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc4_text");
+	//OnHandleFiles((char*)"D:\\Galgame\\DC2DM\\Advdata\\MES\\mar_0124_c1.mes");
+	//OnHandleFiles((char*)"D:\\Galgame\\DC3DD\\AdvData\\MES\\dd_7_0220_e1.mes");
 }
 
 int main(int argc, char* argv[]) {
@@ -79,7 +81,7 @@ int main(int argc, char* argv[]) {
 	}{
 		initConf();
 		system("@echo off");
-		//system("chcp 65001");
+		system("chcp 65001");
 		if (argc != 2) test();
 		else OnHandleFiles(argv[1]);
 		if (mesTextHelper) mesTextHelper->destroy();

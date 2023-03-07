@@ -17,6 +17,7 @@ public:
 
 	void reset() {
 		if (this->buffer) delete[] this->buffer;
+		this->buffer = nullptr;
 		WriteBuffer();
 	}
 

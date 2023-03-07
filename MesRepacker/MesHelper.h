@@ -33,8 +33,8 @@ protected:
 	std::vector<mesconf*> mesconfs;
 	std::vector<mescmd> cmds;
 	mesconf* conf;
+	uint16_t head_t;
 	int offset;
-	short head_t;
 	long size;
 
 	void init() {
@@ -52,21 +52,22 @@ protected:
 	}
 
 	bool selectConf() {
-		short head_t = -1;
+		uint16_t head_t = -1;
 		int offset = -1;
-		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++)
-			if ((
-				(head_t = this->getHeadt((offset = this->offset * 6 + 4))) == (*iter)->head_t // dc3¡¢dc4
-				|| (head_t = this->getHeadt((offset = this->offset * 4 + 4))) == (*iter)->head_t // dc1¡¢dc2
-				) && (this->conf = *iter)) break;
-		if (this->conf) {
-			this->head_t = head_t;
-			this->offset = offset;
-			this->type_name = this->conf->name;
-			return true;
-		}
+		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++) // dc2dm, dc3, dc4
+			if ((head_t = this->getHeadt((offset = this->offset * 6 + 4))) == (*iter)->head_t && (this->conf = *iter))
+				goto __result;
+		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++) // dc1, dc2
+			if ((head_t = this->getHeadt((offset = this->offset * 4 + 4))) == (*iter)->head_t && (this->conf = *iter)) 
+				break;
+		__result:
+			if (this->conf) {
+				this->head_t = head_t;
+				this->offset = offset;
+				this->type_name = this->conf->name;
+				return true;
+			}
 		else return false;
-
 	}
 
 	bool analyzing() {
@@ -76,12 +77,15 @@ protected:
 			mescmd cmd = mescmd();
 			cmd.pos = pos;
 			cmd.key = this->readbuffer->get(pos);
+			if (pos >= 2088) {
+				std::cout << "";
+			}
 			byte tmp = 0;
 			if (this->conf->uint8x2.with(cmd.key)) {
 				cmd.ulen = 3;
 			}
 			else if (this->conf->uint8str.with(cmd.key)) {
-				cmd.ulen = 3;
+				cmd.ulen = 2;
 				this->readbuffer->offset(pos + cmd.ulen);
 				do {
 					this->readbuffer->next(tmp);
@@ -191,7 +195,7 @@ public:
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
 				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
+				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 			}
 		}
 		fclose(out);
