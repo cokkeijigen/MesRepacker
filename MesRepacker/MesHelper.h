@@ -21,7 +21,7 @@ public:
 	void static textOutput(FILE* fp, std::string& str, int pos, int count) {
 		//if (!ftell(fp))	fputs("#UseCodePage: 936\n\n", fp);
 		fprintf(fp, "#0x%x\n", pos);
-		std::string mark("¡ï¡ò  " + std::to_string(count) + "  ¡ò¡ï");
+		std::string mark("★◎  " + std::to_string(count) + "  ◎★");
 		mark.assign(gbk2utf8((char*)mark.c_str()));
 		output(fp, std::string(str).insert(0, std::string(mark).append("//")));
 		output(fp, std::string(str).insert(0, std::string(mark)));
@@ -61,7 +61,7 @@ protected:
 				) && (this->conf = *iter)) break;
 		if (this->conf) {
 			this->head_t = head_t;
-			this->offset = offset + 3;
+			this->offset = offset;
 			this->type_name = this->conf->name;
 			return true;
 		}
@@ -71,7 +71,7 @@ protected:
 
 	bool analyzing() {
 		int size = this->readbuffer->fsize();
-		int pos = this->offset;
+		int pos = this->offset + 3;
 		while (pos < size) {
 			mescmd cmd = mescmd();
 			cmd.pos = pos;
@@ -171,7 +171,7 @@ public:
 				for (int i = 0; i < (*iter).ulen - 2; i++) tmp[i] += 0x20;
 				tmp[(*iter).ulen - 1] = '\0';
 				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
+				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 				textOutput(out, res, (*iter).pos, ++count);
 				delete[] tmp;
 			}
@@ -186,7 +186,7 @@ public:
 				delete[] tmp;
 			}
 			if (this->conf->str.with((*iter).key)) { // test opt
-				continue;
+				//continue;
 				tmp = new byte[(*iter).ulen];
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
@@ -241,9 +241,10 @@ public:
 	}
 
 	void outMesFile(std::string outpath) {
+		WriteBuffer* newFile = new WriteBuffer();
+		newFile->write(this->readbuffer, 0, this->offset + 3);
 		TextMapHelper* textMaps = this->textReadBuffer->getTextMaps();
-		FILE* out = fopen(outpath.append(this->filename + ".mes").c_str(), "wb");
-		this->writeHead(out);
+		int blockCurrent = 1;
 		byte* tmp = { 0 };
 		std::string text;
 		int len = 0;
@@ -253,7 +254,7 @@ public:
 				tmp = new byte[len];
 				*tmp = (*iter).key;
 				memcpy(tmp + 1, text.c_str(), strlen(text.c_str()) + 1);
-				if (this->conf->decstr.with((*iter).key)){
+				if (this->conf->decstr.with((*iter).key)) {
 					for (int i = 1; i < len - 1; i++) tmp[i] -= 0x20;
 				}
 			}
@@ -263,11 +264,20 @@ public:
 				this->readbuffer->get(tmp, (*iter).pos, (*iter).ulen);
 			}
 			if (tmp && len) {
-				fwrite(tmp, 1, len, out);
+				newFile->write(tmp, len);
+				delete[] tmp;
+			}
+			if ((*iter).key == 0x3 || (*iter).key == 0x4) {
+				int slen = newFile->lenf() - (this->offset + 3);
+				tmp = new byte[3];
+				tmp[0] =  slen & 0x000000ff;
+				tmp[1] = (slen & 0x0000ff00) >> 8;
+				tmp[2] = (slen & 0x00ff0000) >> 16;
+				newFile->rewrite(tmp, ++blockCurrent * 4, 3);
 				delete[] tmp;
 			}
 		}
-		fclose(out);
+		newFile->outFile(outpath.append(this->filename + ".mes").c_str());
 	}
 
 	void destroy() {

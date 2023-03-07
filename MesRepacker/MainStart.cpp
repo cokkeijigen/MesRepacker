@@ -66,7 +66,7 @@ void OnHandleFiles(char* files) {
 }
 
 void test() {
-	//return;
+	return;
 	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc4_text");
 }
 
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 	}{
 		initConf();
 		system("@echo off");
-		system("chcp 65001");
+		//system("chcp 65001");
 		if (argc != 2) test();
 		else OnHandleFiles(argv[1]);
 		if (mesTextHelper) mesTextHelper->destroy();

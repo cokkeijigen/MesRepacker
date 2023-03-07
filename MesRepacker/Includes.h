@@ -12,5 +12,6 @@
 #include "StringHelper.h"
 #include "TextMapHelper.h"
 #include "ReadBuffer.h"
+#include "WriteBuffer.h"
 #include "MesConf.h"
 #include "MesHelper.h"

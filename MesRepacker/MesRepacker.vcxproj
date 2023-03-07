@@ -140,6 +140,7 @@
     <ClInclude Include="ReadBuffer.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TextMapHelper.h" />
+    <ClInclude Include="WriteBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
