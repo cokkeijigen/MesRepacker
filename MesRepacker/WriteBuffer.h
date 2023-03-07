@@ -15,7 +15,8 @@ public:
 		this->len = 0;
 	}
 
-	void init() {
+	void reset() {
+		if (this->buffer) delete[] this->buffer;
 		WriteBuffer();
 	}
 

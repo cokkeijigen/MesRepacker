@@ -278,7 +278,7 @@ public:
 			}
 		}
 		this->writeBuffer->outFile(outpath.append(this->filename + ".mes").c_str());
-		this->writeBuffer->init();
+		this->writeBuffer->reset();
 	}
 
 	void destroy() {
