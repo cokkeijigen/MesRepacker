@@ -278,6 +278,7 @@ public:
 			}
 		}
 		newFile->outFile(outpath.append(this->filename + ".mes").c_str());
+		delete newFile;
 	}
 
 	void destroy() {
