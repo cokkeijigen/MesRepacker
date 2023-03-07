@@ -22,7 +22,7 @@ public:
 		//if (!ftell(fp))	fputs("#UseCodePage: 936\n\n", fp);
 		fprintf(fp, "#0x%x\n", pos);
 		std::string mark("★◎  " + std::to_string(count) + "  ◎★");
-		mark.assign(gbk2utf8((char*)mark.c_str()));
+		//mark.assign(gbk2utf8((char*)mark.c_str()));
 		output(fp, std::string(str).insert(0, std::string(mark).append("//")));
 		output(fp, std::string(str).insert(0, std::string(mark)));
 		fputc('\r\n', fp);
@@ -171,7 +171,7 @@ public:
 				for (int i = 0; i < (*iter).ulen - 2; i++) tmp[i] += 0x20;
 				tmp[(*iter).ulen - 1] = '\0';
 				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
+				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 				textOutput(out, res, (*iter).pos, ++count);
 				delete[] tmp;
 			}
@@ -186,12 +186,12 @@ public:
 				delete[] tmp;
 			}
 			if (this->conf->str.with((*iter).key)) { // test opt
-				//continue;
+				continue;
 				tmp = new byte[(*iter).ulen];
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
 				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
+				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 			}
 		}
 		fclose(out);
