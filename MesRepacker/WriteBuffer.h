@@ -15,6 +15,10 @@ public:
 		this->len = 0;
 	}
 
+	void init() {
+		WriteBuffer();
+	}
+
 	void Oversize(int b_len) {
 		if (this->len + b_len >= size) {
 			size += raise;

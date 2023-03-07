@@ -219,7 +219,7 @@ public:
 class MesRepacker : public MesHelper {
 	std::string mespath;
 	TextReadBuffer* textReadBuffer;
-
+	WriteBuffer* writeBuffer;
 	void writeHead(FILE* out) {
 		byte* tmp = new byte[this->offset];
 		this->readbuffer->get(tmp, 0, this->offset);
@@ -241,8 +241,8 @@ public:
 	}
 
 	void outMesFile(std::string outpath) {
-		WriteBuffer* newFile = new WriteBuffer();
-		newFile->write(this->readbuffer, 0, this->offset + 3);
+		if (!this->writeBuffer) this->writeBuffer = new WriteBuffer();
+		this->writeBuffer->write(this->readbuffer, 0, this->offset + 3);
 		TextMapHelper* textMaps = this->textReadBuffer->getTextMaps();
 		int blockCurrent = 1;
 		byte* tmp = { 0 };
@@ -264,25 +264,26 @@ public:
 				this->readbuffer->get(tmp, (*iter).pos, (*iter).ulen);
 			}
 			if (tmp && len) {
-				newFile->write(tmp, len);
+				this->writeBuffer->write(tmp, len);
 				delete[] tmp;
 			}
 			if ((*iter).key == 0x3 || (*iter).key == 0x4) {
-				int slen = newFile->lenf() - (this->offset + 3);
+				int slen = this->writeBuffer->lenf() - (this->offset + 3);
 				tmp = new byte[3];
 				tmp[0] =  slen & 0x000000ff;
 				tmp[1] = (slen & 0x0000ff00) >> 8;
 				tmp[2] = (slen & 0x00ff0000) >> 16;
-				newFile->rewrite(tmp, ++blockCurrent * 4, 3);
+				this->writeBuffer->rewrite(tmp, ++blockCurrent * 4, 3);
 				delete[] tmp;
 			}
 		}
-		newFile->outFile(outpath.append(this->filename + ".mes").c_str());
-		delete newFile;
+		this->writeBuffer->outFile(outpath.append(this->filename + ".mes").c_str());
+		this->writeBuffer->init();
 	}
 
 	void destroy() {
 		if (this->textReadBuffer) delete this->textReadBuffer;
+		if (this->writeBuffer) delete this->writeBuffer;
 		MesHelper::destroy();
 	}
 };
