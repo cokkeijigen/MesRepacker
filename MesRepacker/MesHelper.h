@@ -259,6 +259,7 @@ public:
 		if (!std::filesystem::exists(mesfile.c_str())) return false;
 		return this->textReadBuffer->reader(filepath, this->is_not_strcon)->hasData() 
 			&& MesHelper::load(mesfile);
+
 	}
 
 	void outMesFile(std::string outpath) {
@@ -278,15 +279,11 @@ public:
 				if (this->conf->decstr.with((*iter).key)) {
 					for (int i = 1; i < len - 1; i++) tmp[i] -= 0x20;
 				}
-			}
-			else {
-				len = (*iter).ulen;
-				tmp = new byte[len];
-				this->readbuffer->get(tmp, (*iter).pos, (*iter).ulen);
-			}
-			if (tmp && len) {
 				this->writeBuffer->write(tmp, len);
 				delete[] tmp;
+			}
+			else {
+				this->writeBuffer->write(this->readbuffer, (*iter).pos, (*iter).ulen);
 			}
 			if ((*iter).key == 0x3 || (*iter).key == 0x4) {
 				int slen = this->writeBuffer->lenf() - (this->offset + 3);

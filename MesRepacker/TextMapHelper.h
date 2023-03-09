@@ -6,43 +6,41 @@ struct TextMap {
 };
 
 class TextMapHelper {
-    std::vector<TextMap> textMaps;
+    std::map<int, std::string>* textMaps;
 public:
 
     TextMapHelper() {
+        this->textMaps = new std::map<int, std::string>;
     }
 
     ~TextMapHelper() {
         this->clear();
-    }
-    
-    bool push(int pos, std::string str) {
-        for (auto iter = this->textMaps.begin(); iter != this->textMaps.end(); iter++)
-            if ((*iter).position == pos) return false;
-        this->textMaps.push_back({pos, str});
-        return true;
+        if (this->textMaps) delete textMaps;
     }
 
-    bool get(int pos, std::string &strbuf) {
-        for (auto iter = this->textMaps.begin(); iter != this->textMaps.end(); iter++) {
-            if ((*iter).position == pos) {
-                strbuf.assign((*iter).text);
-                return true;
-            }
+    void push(int pos, std::string str) {
+        this->textMaps->insert(std::make_pair(pos, str));
+    }
+
+    bool get(int pos, std::string& strbuf) {
+        auto mapos = this->textMaps->find(pos);
+        if (mapos != this->textMaps->end()) {
+            strbuf.assign(mapos->second);
+            return true;
         }
-        return false;
+        else return false;
     }
 
     bool size() {
-        return this->textMaps.size();
+        return this->textMaps->size();
     }
 
     void clear() {
-        this->textMaps.clear();
+        this->textMaps->clear();
     }
     void foreach(void(*fun)(TextMap)) {
-        for (auto iter = this->textMaps.begin(); iter != this->textMaps.end(); iter++) {
-           (*fun)((*iter));
+        for (auto iter = this->textMaps->begin(); iter != this->textMaps->end(); iter++) {
+            (*fun)({(*iter).first, (*iter).second});
         }
     }
 

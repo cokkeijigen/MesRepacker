@@ -83,7 +83,9 @@ void OnHandleFiles(char* files) {
 
 void test() {
 	return;
-	//OnHandleFiles((char*)"D:\\Galgame\\DC4\\Advdata\\MES\\dc4_asa20190429b.mes");
+	//OnHandleFkiles((char*)"D:\\Galgame\\DC4\\Advdata\\MES\\dc4_asa20190429b.mes");
+	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc3rx_text");
+	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\TEST");
 }
 
 int main(int argc, char* argv[]) {
@@ -93,6 +95,7 @@ int main(int argc, char* argv[]) {
 		exeName.assign(exeName.substr(exeName.find_last_of("\\") + 1));
 		workPath.assign(workPath.substr(0, workPath.find_last_of("\\") + 1));
 		std::transform(exeName.begin(), exeName.end(), exeName.begin(), ::tolower);
+		//exeName.assign("MesRepacker-sdc3rx.exe");
 		isNotStrCon = exeName.find("-nsc") != -1;
 		isIgbk = exeName.find("-igbk") != -1;
 
@@ -100,9 +103,12 @@ int main(int argc, char* argv[]) {
 		initConf();
 		findConfInExeName();
 		system("@echo off");
-		//system("chcp 65001");
+		system("chcp 65001");
+		int startTime = clock();
 		if (argc != 2) test();
 		else OnHandleFiles(argv[1]);
+		int endTime = clock();
+		std::cout << "time consuming: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << std::endl;
 		if (mesTextHelper) mesTextHelper->destroy();
 		if (mesRepacker) mesRepacker->destroy();
 	}

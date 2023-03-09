@@ -82,15 +82,15 @@ class TextReadBuffer {
 		while (std::getline(ifs, line))
 			if (!is_not_strcon && line.find("#UseCodePage") != -1) {
 				line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
-				line.assign(line.substr(line.find_last_of(":") + 1));
+				line.assign(line.substr(line.find_first_of(":") + 1));
 				codepage = std::stoi(line);
 			}
 			else if (line.find("#0x") != -1) {
-				pos = line.substr(0, line.find_last_of(":"));
-				pos.assign(pos.substr(pos.find_last_of("#") + 1));
+				pos = line.substr(0, line.find_first_of(":"));
+				pos.assign(pos.substr(pos.find_first_of("#") + 1));
 				pos.erase(std::remove_if(pos.begin(), pos.end(), isspace), pos.end());
 				if (sscanf(pos.c_str(), "%x", &position)) {
-					text = line.substr(line.find_last_of(":") + 1);
+					text = line.substr(line.find_first_of(":") + 1);
 					replacestr(text, "\\n", "\n");
 					this->textMapHelper->push(position, is_not_strcon ? text : strcon(text, codepage));
 				}

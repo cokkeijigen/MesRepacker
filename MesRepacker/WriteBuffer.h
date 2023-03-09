@@ -17,15 +17,15 @@ public:
 
 	void reset() {
 		if (this->buffer) delete[] this->buffer;
-		this->buffer = nullptr;
-		WriteBuffer();
+		this->buffer = new byte[this->size];
+		this->len = 0;
 	}
 
 	void Oversize(int b_len) {
 		if (this->len + b_len >= size) {
 			size += raise;
 			byte* tmp = new byte[size];
-			memcpy(tmp, this->buffer, this->len + 1);
+			if(len) memcpy(tmp, this->buffer, this->len + 1);
 			delete[] this->buffer;
 			this->buffer = tmp;
 			if (this->len + b_len >= size) Oversize(b_len);

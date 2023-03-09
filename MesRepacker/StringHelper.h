@@ -38,7 +38,6 @@ std::string strcon(std::string str, int ncp) {
     delete[]dst;
     delete[]psText;
     return res;
-
 }
 
 void replacestr(std::string &orgstr, std::string oldstr, std::string newstr, size_t start = 0) {
