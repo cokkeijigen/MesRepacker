@@ -3,13 +3,14 @@
 class WriteBuffer {
 	byte* buffer;
 	size_t raise;
-	long size, len;
+	long initial, size, len;
 
 public:
 	WriteBuffer() : WriteBuffer(1024, 500) {}
 
 	WriteBuffer(size_t initial, size_t raise) {
 		this->buffer = new byte[initial];
+		this->initial = initial;
 		this->size = initial;
 		this->raise = raise;
 		this->len = 0;
@@ -17,7 +18,8 @@ public:
 
 	void reset() {
 		if (this->buffer) delete[] this->buffer;
-		this->buffer = new byte[this->size];
+		this->buffer = new byte[this->initial];
+		this->size = this->initial;
 		this->len = 0;
 	}
 

@@ -276,9 +276,8 @@ public:
 				tmp = new byte[len];
 				*tmp = (*iter).key;
 				memcpy(tmp + 1, text.c_str(), strlen(text.c_str()) + 1);
-				if (this->conf->decstr.with((*iter).key)) {
+				if (this->conf->decstr.with((*iter).key))
 					for (int i = 1; i < len - 1; i++) tmp[i] -= 0x20;
-				}
 				this->writeBuffer->write(tmp, len);
 				delete[] tmp;
 			}
