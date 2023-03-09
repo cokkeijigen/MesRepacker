@@ -75,12 +75,12 @@ class TextReadBuffer {
 
 	TextMapHelper *textMapHelper;
 
-	TextReadBuffer* reader(std::ifstream ifs) {
+	TextReadBuffer* reader(std::ifstream ifs, bool is_not_strcon) {
 		if (!ifs.is_open()) return this;
 		std::string line, text, pos;
 		int codepage = 936, position = 0;
 		while (std::getline(ifs, line))
-			if (!codepage && line.find("#UseCodePage") != -1) {
+			if (!is_not_strcon && line.find("#UseCodePage") != -1) {
 				line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
 				line.assign(line.substr(line.find_last_of(":") + 1));
 				codepage = std::stoi(line);
@@ -92,7 +92,7 @@ class TextReadBuffer {
 				if (sscanf(pos.c_str(), "%x", &position)) {
 					text = line.substr(line.find_last_of(":") + 1);
 					replacestr(text, "\\n", "\n");
-					this->textMapHelper->push(position, strcon(text, codepage));
+					this->textMapHelper->push(position, is_not_strcon ? text : strcon(text, codepage));
 				}
 			}
 		ifs.close();
@@ -116,9 +116,9 @@ public:
 		this->textMapHelper->clear();
 	}
 
-	TextReadBuffer* reader(std::string filepath) {
+	TextReadBuffer* reader(std::string filepath, bool is_not_strcon) {
 		this->init();
-		return this->reader(std::ifstream(filepath, std::ios::in));
+		return this->reader(std::ifstream(filepath, std::ios::in), is_not_strcon);
 	}
 
 	bool hasData() {

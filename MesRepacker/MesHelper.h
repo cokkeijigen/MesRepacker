@@ -7,38 +7,18 @@ struct mescmd {
 };
 
 class MesHelper{
-public:
-	void static output(FILE* fp, std::string& str) {
-		byte tmp;
-		for (size_t i = 0; i < str.size(); i++) {
-			tmp = str.c_str()[i];
-			if (tmp == '\n') fputs("\\n", fp);
-			else fputc(tmp, fp);
-		}
-		fputc('\r\n', fp);
-	}
-
-	void static textOutput(FILE* fp, std::string& str, int pos, int count) {
-		//if (!ftell(fp))	fputs("#UseCodePage: 936\n\n", fp);
-		fprintf(fp, "#0x%x\n", pos);
-		std::string mark("★◎  " + std::to_string(count) + "  ◎★");
-		//mark.assign(gbk2utf8((char*)mark.c_str()));
-		output(fp, std::string(str).insert(0, std::string(mark).append("//")));
-		output(fp, std::string(str).insert(0, std::string(mark)));
-		fputc('\r\n', fp);
-	}
-
 protected:
 	ReadBuffer* readbuffer;
 	std::vector<mesconf*> mesconfs;
 	std::vector<mescmd> cmds;
 	mesconf* conf;
 	uint16_t head_t;
+	bool atsel;
 	int offset;
 	long size;
 
 	void init() {
-		this->conf = nullptr;
+		if(atsel) this->conf = nullptr;
 		this->offset = 0;
 		this->head_t = 0;
 		this->size = 0;
@@ -52,22 +32,17 @@ protected:
 	}
 
 	bool selectConf() {
+		if (!this->mesconfs.size() && this->conf) 
+			return (this->offset = this->conf->offset(this->offset));
 		uint16_t head_t = -1;
 		int offset = -1;
-		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++) // dc2dm, dc3, dc4
-			if ((head_t = this->getHeadt((offset = this->offset * 6 + 4))) == (*iter)->head_t && (this->conf = *iter))
-				goto __result;
-		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++) // dc1, dc2
-			if ((head_t = this->getHeadt((offset = this->offset * 4 + 4))) == (*iter)->head_t && (this->conf = *iter)) 
-				break;
-		__result:
-			if (this->conf) {
-				this->head_t = head_t;
-				this->offset = offset;
-				this->type_name = this->conf->name;
-				return true;
-			}
-		else return false;
+		for (auto iter = this->mesconfs.begin(); iter != this->mesconfs.end(); iter++)
+			if ((head_t = this->getHeadt(offset = (*iter)->offset(this->offset))) ==
+				(*iter)->head_t && (this->conf = *iter)) break;
+		if (this->conf) {
+			this->type_name = this->conf->name;
+			return (this->head_t = head_t) && (this->offset = offset);
+		} else return false;
 	}
 
 	bool analyzing() {
@@ -114,11 +89,19 @@ protected:
 
 	MesHelper() {
 		this->readbuffer = nullptr;
+		this->atsel = true;
 		this->init();
 	}
 
 	MesHelper(std::vector<mesconf*> mesconfs) : MesHelper() {
 		this->mesconfs = mesconfs;
+	}
+
+
+	MesHelper(mesconf* conf) : MesHelper() {
+		this->atsel = false;
+		this->conf = conf;
+		this->type_name = this->conf->name;
 	}
 
 	void destroy() {
@@ -155,10 +138,41 @@ public:
 
 class MesTextHelper: public MesHelper {
 
+	void output(FILE* fp, std::string& str) {
+		byte tmp;
+		for (size_t i = 0; i < str.size(); i++) {
+			tmp = str.c_str()[i];
+			if (tmp == '\n') fputs("\\n", fp);
+			else fputc(tmp, fp);
+		}
+		fputc('\r\n', fp);
+	}
+
+	void textOutput(FILE* fp, std::string& str, int pos, int count) {
+		if (is_not_strcon) {
+			fprintf(fp, "#0x%x:", pos);
+			output(fp, str);
+		}
+		else {
+			fprintf(fp, "#0x%x\n", pos);
+			std::string mark("★◎  " + std::to_string(count) + "  ◎★");
+			//mark.assign(gbk2utf8((char*)mark.c_str()));
+			output(fp, std::string(str).insert(0, std::string(mark).append("//")));
+			output(fp, std::string(str).insert(0, std::string(mark)));
+			fputc('\r\n', fp);
+		}
+	}
+
 	bool is_igbk;
+	bool is_not_strcon;
 
 public:
-	MesTextHelper(std::vector<mesconf*> mesconfs, bool is_igbk) : MesHelper(mesconfs) {
+	MesTextHelper(std::vector<mesconf*> mesconfs, bool is_not_strcon, bool is_igbk) : MesHelper(mesconfs) {
+		this->is_not_strcon = is_not_strcon;
+		this->is_igbk = is_igbk;
+	}
+	MesTextHelper(mesconf* conf, bool is_not_strcon, bool is_igbk) : MesHelper(conf) {
+		this->is_not_strcon = is_not_strcon;
 		this->is_igbk = is_igbk;
 	}
 
@@ -174,7 +188,7 @@ public:
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				for (int i = 0; i < (*iter).ulen - 2; i++) tmp[i] += 0x20;
 				tmp[(*iter).ulen - 1] = '\0';
-				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
+				std::string res = this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
 				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 				textOutput(out, res, (*iter).pos, ++count);
 				delete[] tmp;
@@ -184,7 +198,7 @@ public:
 				tmp = new byte[(*iter).ulen];
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
-				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
+				std::string res = this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
 				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
 				textOutput(out, res, (*iter).pos, ++count);
 				delete[] tmp;
@@ -221,19 +235,21 @@ public:
 };
 
 class MesRepacker : public MesHelper {
+
 	std::string mespath;
 	TextReadBuffer* textReadBuffer;
 	WriteBuffer* writeBuffer;
-	void writeHead(FILE* out) {
-		byte* tmp = new byte[this->offset];
-		this->readbuffer->get(tmp, 0, this->offset);
-		fwrite(tmp, 1, this->offset, out);
-		delete[] tmp;
-	}
+	bool is_not_strcon;
 
 public:
-	MesRepacker(std::vector<mesconf*> mesconfs, std::string mespath) : MesHelper(mesconfs) {
+	MesRepacker(std::vector<mesconf*> mesconfs, std::string mespath, bool is_not_strcon) : MesHelper(mesconfs) {
 		this->mespath = mespath;
+		this->is_not_strcon = is_not_strcon;
+		if (!this->textReadBuffer) this->textReadBuffer = new TextReadBuffer();
+	}
+	MesRepacker(mesconf* conf, std::string mespath, bool is_not_strcon) : MesHelper(conf) {
+		this->mespath = mespath;
+		this->is_not_strcon = is_not_strcon;
 		if (!this->textReadBuffer) this->textReadBuffer = new TextReadBuffer();
 	}
 
@@ -241,7 +257,8 @@ public:
 		this->setFileName(filepath);
 		std::string mesfile(this->mespath + this->filename + ".mes");
 		if (!std::filesystem::exists(mesfile.c_str())) return false;
-		return this->textReadBuffer->reader(filepath)->hasData() && MesHelper::load(mesfile);
+		return this->textReadBuffer->reader(filepath, this->is_not_strcon)->hasData() 
+			&& MesHelper::load(mesfile);
 	}
 
 	void outMesFile(std::string outpath) {

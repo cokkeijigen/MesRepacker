@@ -4,6 +4,17 @@ std::string exeName("");
 std::string workPath("");
 MesRepacker* mesRepacker = nullptr;
 MesTextHelper* mesTextHelper = nullptr;
+mesconf* _mesconf = nullptr;
+bool isNotStrCon = false;
+bool isIgbk = false;
+
+void findConfInExeName() {
+	if (exeName.find("-s") == -1) return;
+	std::string confName("-s");
+	for (auto iter = mesConfigs.begin(); iter != mesConfigs.end(); iter++)
+		if ((exeName.find(confName + (*iter)->name) != -1) && (_mesconf = *iter))
+			return;
+}
 
 std::string CreatePath(std::string mespath, std::string path) {
 	if (!std::filesystem::exists(path)) {
@@ -15,11 +26,13 @@ std::string CreatePath(std::string mespath, std::string path) {
 		fclose(opt);
 	}
 	_result:
-	return path;
+		return path;
 }
 
 void StartHandleScript(char* filepath) {
-	if (!mesTextHelper) mesTextHelper = new MesTextHelper(mesConfigs, exeName.find("-igbk") != -1);
+	if (!mesTextHelper) mesTextHelper = _mesconf ? 
+		new MesTextHelper(_mesconf, isNotStrCon, isIgbk) 
+		: new MesTextHelper(mesConfigs, isNotStrCon, isIgbk);
 	if (mesTextHelper->load(filepath)) {
 		mesTextHelper->outTextToFile(CreatePath(filepath, (workPath + mesTextHelper->type_name + "_text\\")));
 		std::cout << mesTextHelper->filename << ": done." << std::endl;
@@ -41,7 +54,9 @@ bool IsRepack(std::string path) {
 	if (std::filesystem::exists(mespath) && !std::filesystem::is_directory(mespath)) {
 		std::ifstream conf(mespath, std::ios::in);
 		while (std::getline(conf, mespath)) if (mespath.size() > 1) break;
-		if (!mesRepacker) mesRepacker = new MesRepacker(mesConfigs, mespath);
+		if (!mesRepacker) mesRepacker = _mesconf ?
+			new MesRepacker(_mesconf, mespath, isNotStrCon) 
+			: new MesRepacker(mesConfigs, mespath, isNotStrCon);
 		for (auto& i : std::filesystem::directory_iterator(path)) {
 			if (i.path().string().find(".txt") == -1) continue;
 			StartHandleRepack(i.path().string());
@@ -68,8 +83,7 @@ void OnHandleFiles(char* files) {
 
 void test() {
 	return;
-	//OnHandleFiles((char*)"D:\\Galgame\\DC2DM\\Advdata\\MES\\mar_0124_c1.mes");
-	//OnHandleFiles((char*)"D:\\Galgame\\DC3DD\\AdvData\\MES\\dd_7_0220_e1.mes");
+	//OnHandleFiles((char*)"D:\\Galgame\\DC4\\Advdata\\MES\\dc4_asa20190429b.mes");
 }
 
 int main(int argc, char* argv[]) {
@@ -78,10 +92,15 @@ int main(int argc, char* argv[]) {
 		workPath.assign(argv[0]);
 		exeName.assign(exeName.substr(exeName.find_last_of("\\") + 1));
 		workPath.assign(workPath.substr(0, workPath.find_last_of("\\") + 1));
+		std::transform(exeName.begin(), exeName.end(), exeName.begin(), ::tolower);
+		isNotStrCon = exeName.find("-nsc") != -1;
+		isIgbk = exeName.find("-igbk") != -1;
+
 	}{
 		initConf();
+		findConfInExeName();
 		system("@echo off");
-		system("chcp 65001");
+		//system("chcp 65001");
 		if (argc != 2) test();
 		else OnHandleFiles(argv[1]);
 		if (mesTextHelper) mesTextHelper->destroy();
