@@ -2,15 +2,20 @@
 mes脚本重打包 
 
 ## 如何使用
-导出文本：`将mes文件或者文件夹拖动到exe`  
-
+### 导出文本
+将mes文件或者文件夹拖动到exe
+### 导入文本
+首先确保你的文本格式为`#0xabc11: 文本`
+然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径
+将整个文件夹拖动到exe上即可
+ 
 默认情况下，程序会将sj编码转换成utf8然后导出  
 此外还支持gbk转utf8，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
 如果不需要转换，将exe的重命名加上`-nsc`，例如`MesRepacker-nsc.exe`  
-  
- 程序默认是自动选择mes版本，但是你可以手动选择  
- 将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe`// 配置为dc4
- | 游戏| 简称 | 
+
+程序默认是自动选择mes版本，但是你可以手动选择  
+将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe`// 配置为dc4
+| 游戏| 简称 | 
 | :-----| :----: |
 |D.S. -Dal Segno- | ds | 
 |D.C.4 ～ダ・カーポ4～ | dc4|
