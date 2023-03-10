@@ -12,11 +12,14 @@ mes脚本重打包
  将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe  // 配置为dc4` 
  | 游戏| 简称 | 
 | :-----| :----: |
-| D.S. -Dal Segno- | ds | 
-| D.C.4 ～ダ・カーポ4～ | dc4|
+|D.S. -Dal Segno- | ds | 
+|D.C.4 ～ダ・カーポ4～ | dc4|
 |D.C.Ⅲ DreamDays|dc3dd|
-|D.C.III WithYou ～ダ・カーポIII～ ウィズユー |dc3wy|
-|D.C.III R ～ダ・カーポIIIアール～X-rated|dc3rx|
-|D.C.II P.S.～ダ・カーポII～プラスシチュエーション|dc2pc|
-|D.C.II To You～ダ･カーポII～トゥーユー|dc2ty|
-|D.C.II Spring Celebration 〜ダ・カーポII〜 スプリング セレブレイション|dc2sc|
+|D.C.III WithYou|dc3wy|
+|D.C.III RX-rated|dc3rx|
+|D.C.II P.S.|dc2pc|
+|D.C.II To You|dc2ty|
+|D.C.II Spring Celebration|dc2sc|
+|D.C.II C.C. 音姫先生のどきどき特別授業|dc2ccotm|
+|D.C.II C.C. 月島小恋のらぶらぶバスルーム|dc2cckko|
+|||
