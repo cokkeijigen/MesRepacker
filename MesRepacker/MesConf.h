@@ -178,7 +178,7 @@ void initConf() {
 
 	mesConfigs.push_back(
 		new mesconf{
-			0x6638, "dc2fy2",
+			0x6638, "dc2fy",
 			{0x00, 0x2E},
 			{0xFF, 0xFF}, // 0xFF占位
 			{0x2F, 0x4B},

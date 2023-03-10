@@ -82,10 +82,10 @@ void OnHandleFiles(char* files) {
 }
 
 void test() {
+	std::cout << "parameter empty." << std::endl;
 	return;
 	//OnHandleFkiles((char*)"D:\\Galgame\\DC4\\Advdata\\MES\\dc4_asa20190429b.mes");
 	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\dc3rx_text");
-	//OnHandleFiles((char*)"F:\\PROJECT\\MesRepacker\\Debug\\TEST");
 }
 
 int main(int argc, char* argv[]) {
@@ -107,10 +107,11 @@ int main(int argc, char* argv[]) {
 		int startTime = clock();
 		if (argc != 2) test();
 		else OnHandleFiles(argv[1]);
-		int endTime = clock();
-		std::cout << "time consuming: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << std::endl;
 		if (mesTextHelper) mesTextHelper->destroy();
 		if (mesRepacker) mesRepacker->destroy();
+		int endTime = clock();
+		std::cout << "time consuming: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << std::endl;
+		std::cout << "MesRepacker ver 1.0" << std::endl;
 	}
 	system("pause");
 	return 0;
