@@ -9,8 +9,9 @@ mes脚本重打包
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate.png)<br>
 然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径 
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate1.png)<br>
-最后将整个文件夹拖动到exe上即可
- 
+导入编码默认是gbk，如需更改，请在文本第一行加入`#UseCodePage: xxx`，其中xxx为目标编码的cp值  
+最后将整个文件夹拖动到exe上即可  
+--- 
 默认情况下，程序会将sj编码转换成utf8然后导出  
 此外还支持gbk转utf8，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
 如果不需要转换，将exe的重命名加上`-nsc`，例如`MesRepacker-nsc.exe`  
