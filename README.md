@@ -22,4 +22,6 @@ mes脚本重打包
 |D.C.II Spring Celebration|dc2sc|
 |D.C.II C.C. 音姫先生のどきどき特別授業|dc2ccotm|
 |D.C.II C.C. 月島小恋のらぶらぶバスルーム|dc2cckko|
-|||
+|D.C.II 〜featuring　Yun2〜|dc2fy|
+|D.C.II Dearest Marriage|dc2dm|
+|D.C.II 春風のアルティメットバトル！|dc2bs・dcbs|
