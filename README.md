@@ -25,3 +25,12 @@ mes脚本重打包
 |D.C.II 〜featuring　Yun2〜|dc2fy|
 |D.C.II Dearest Marriage|dc2dm|
 |D.C.II 春風のアルティメットバトル！|dc2bs・dcbs|
+|D.C.II Fall in Love|dc2fl|
+|D.C.A.S. 〜ダ・カーポ〜アフターシーズンズ|dcas|
+|D.C. Dream X’mas|dcdx|
+|D.C.〜ダ・カーポ〜　MEMORIES DISC|dcmems|
+|Ｄ．Ｃ．Ｐ．Ｃ．(Vista)|dcpcv|
+|D.C. Summer Vacation|dcsv|
+|D.C.WhiteSeason|dcws|
+|ことり Love Ex P|ktlep|
+|D.C.〜ダ・カーポ〜　温泉編|dcos|
