@@ -7,8 +7,9 @@ mes脚本重打包
 ### 导入文本
 首先确保你的文本格式为`#0xabc11: 文本` 如下图所示  
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate.png)<br>
-然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径
-将整个文件夹拖动到exe上即可
+然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径 
+![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate1.png)<br>
+最后将整个文件夹拖动到exe上即可
  
 默认情况下，程序会将sj编码转换成utf8然后导出  
 此外还支持gbk转utf8，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
