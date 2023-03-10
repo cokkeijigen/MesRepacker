@@ -16,7 +16,7 @@ mes脚本重打包
 | D.C.4 ～ダ・カーポ4～ | dc4|
 |D.C.Ⅲ DreamDays|dc3dd|
 |D.C.III WithYou ～ダ・カーポIII～ ウィズユー |dc3wy|
-|D.C.III R ~ダ・カーポIIIアール~X-rated|dc3rx|
+|D.C.III R ～ダ・カーポIIIアール～X-rated|dc3rx|
 |D.C.II P.S.～ダ・カーポII～プラスシチュエーション|dc2pc|
 |D.C.II To You～ダ･カーポII～トゥーユー|dc2ty|
 |D.C.II Spring Celebration 〜ダ・カーポII〜 スプリング セレブレイション|dc2sc|
