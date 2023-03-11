@@ -28,8 +28,7 @@ public:
 		if (len) memcpy(tmp, this->buffer, this->len + 1);
 		delete[] this->buffer;
 		this->buffer = tmp;
-		if (this->len + b_len >= this->size)
-			Oversize(b_len);
+		Oversize(b_len);
 	}
 
 	void write(byte *bytes, int b_len) {
