@@ -285,11 +285,11 @@ public:
 				this->writeBuffer->write(this->readbuffer, (*iter).pos, (*iter).ulen);
 			}
 			if ((*iter).key == 0x3 || (*iter).key == 0x4) {
-				int slen = this->writeBuffer->lensub(this->offset + 3);
+				len = this->writeBuffer->lensub(this->offset + 3);
 				tmp = new byte[3];
-				tmp[0] =  slen & 0x000000ff;
-				tmp[1] = (slen & 0x0000ff00) >> 8;
-				tmp[2] = (slen & 0x00ff0000) >> 16;
+				tmp[0] =  len & 0x000000ff;
+				tmp[1] = (len & 0x0000ff00) >> 8;
+				tmp[2] = (len & 0x00ff0000) >> 16;
 				this->writeBuffer->rewrite(tmp, ++blockCurrent * 4, 3);
 				delete[] tmp;
 			}
