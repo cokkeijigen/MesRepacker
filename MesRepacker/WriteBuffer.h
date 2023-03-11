@@ -22,8 +22,9 @@ public:
 	}
 
 	void Oversize(int b_len) {
-		if (this->len + b_len < this->size) return;
-		while ((this->len + b_len) > (this->size += this->raise));
+		int target = this->len + b_len;
+		if (target < this->size) return;
+		while (target > (this->size += this->raise));
 		byte* tmp = new byte[this->size];
 		if (len) memcpy(tmp, this->buffer, this->len + 1);
 		delete[] this->buffer;
