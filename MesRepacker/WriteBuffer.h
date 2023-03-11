@@ -48,8 +48,8 @@ public:
 		delete[] tmp;
 	}
 
-	long lenf() {
-		return this->len;
+	long lensub(int sub = 0) {
+		return this->len - sub;
 	}
 
 	byte* fbuf() {
