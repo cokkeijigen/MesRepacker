@@ -178,8 +178,9 @@ public:
 
 	void outTextToFile(std::string outpath) {
 		FILE* out = fopen(outpath.append(this->filename + ".txt").c_str(), "w");
+		std::string outstr;
 		int count = 0;
-		byte* tmp = {0};
+		byte* tmp = { 0 };
 		//this->is_igbk = true;
 		for (auto iter = this->cmds.begin(); iter != this->cmds.end(); iter++) {
 			if (this->conf->decstr.with((*iter).key)) {
@@ -188,9 +189,9 @@ public:
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				for (int i = 0; i < (*iter).ulen - 2; i++) tmp[i] += 0x20;
 				tmp[(*iter).ulen - 1] = '\0';
-				std::string res = this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
-				textOutput(out, res, (*iter).pos, ++count);
+				outstr.assign(this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp));
+				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, outstr.c_str());
+				textOutput(out, outstr, (*iter).pos, ++count);
 				delete[] tmp;
 			}
 			else if (this->conf->optundec && this->conf->optundec == (*iter).key) {
@@ -198,9 +199,9 @@ public:
 				tmp = new byte[(*iter).ulen];
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
-				std::string res = this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
-				textOutput(out, res, (*iter).pos, ++count);
+				outstr.assign(this->is_not_strcon ? (char*)tmp : this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp));
+				//printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, outstr.c_str());
+				textOutput(out, outstr, (*iter).pos, ++count);
 				delete[] tmp;
 			}
 			if (this->conf->str.with((*iter).key)) { // test opt
@@ -208,8 +209,8 @@ public:
 				tmp = new byte[(*iter).ulen];
 				this->readbuffer->get(tmp, (*iter).pos + 1, (*iter).ulen - 1);
 				tmp[(*iter).ulen - 1] = '\0';
-				std::string res = this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp);
-				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, res.c_str());
+				outstr.assign(this->is_igbk ? gbk2utf8((char*)tmp) : sj2utf8((char*)tmp));
+				printf("key: 0x%x pos: %d str: %s\n", (int)(*iter).key, (*iter).pos, outstr.c_str());
 			}
 		}
 		fclose(out);
