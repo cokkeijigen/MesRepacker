@@ -1,11 +1,10 @@
 # MesRepacker
-mes脚本重打包 
-
-## 如何使用
+### mes脚本重打包，本工具仅供技术学习交流使用，禁止一切不法使用！  
+***
 ### 导出文本
 将mes文件或者文件夹拖动到exe
 ### 导入文本
-首先确保你的文本格式为`#0xabc11: 文本` 如下图所示  
+首先确保你的文本格式为`#0xXXXX: 文本` 如下图所示  
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate.png)<br>
 然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径 
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate2.png)<br>
