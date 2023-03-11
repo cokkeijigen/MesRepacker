@@ -259,7 +259,6 @@ public:
 		if (!std::filesystem::exists(mesfile.c_str())) return false;
 		return this->textReadBuffer->reader(filepath, this->is_not_strcon)->hasData() 
 			&& MesHelper::load(mesfile);
-
 	}
 
 	void outMesFile(std::string outpath) {

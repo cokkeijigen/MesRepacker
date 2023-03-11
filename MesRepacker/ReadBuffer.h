@@ -89,11 +89,9 @@ class TextReadBuffer {
 				pos = line.substr(0, line.find_first_of(":"));
 				pos.assign(pos.substr(pos.find_first_of("#") + 1));
 				pos.erase(std::remove_if(pos.begin(), pos.end(), isspace), pos.end());
-				if (sscanf(pos.c_str(), "%x", &position)) {
-					text = line.substr(line.find_first_of(":") + 1);
-					replacestr(text, "\\n", "\n");
-					this->textMapHelper->push(position, is_not_strcon ? text : strcon(text, codepage));
-				}
+				if (!sscanf(pos.c_str(), "%x", &position)) continue;
+				text = line.substr(line.find_first_of(":") + 1);
+				this->textMapHelper->push(position, is_not_strcon ? text : strcon(text, codepage));
 			}
 		ifs.close();
 		return this;

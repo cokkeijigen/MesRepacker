@@ -9,11 +9,9 @@ public:
 	WriteBuffer() : WriteBuffer(1024, 500) {}
 
 	WriteBuffer(size_t initial, size_t raise) {
-		this->buffer = new byte[initial];
 		this->initial = initial;
-		this->size = initial;
 		this->raise = raise;
-		this->len = 0;
+		this->reset();
 	}
 
 	void reset() {
@@ -24,19 +22,14 @@ public:
 	}
 
 	void Oversize(int b_len) {
-		if (this->len + b_len >= size) {
-			size += raise;
-			byte* tmp = new byte[size];
-			if (len) memcpy(tmp, this->buffer, this->len + 1);
-			delete[] this->buffer;
-			this->buffer = tmp;
-			if (this->len + b_len >= size) Oversize(b_len);
-		}
-	}
-
-	void write(byte _byte) {
-		Oversize(1);
-		this->buffer[this->len++] = _byte;
+		if (this->len + b_len < this->size) return;
+		this->size += this->raise;
+		byte* tmp = new byte[this->size];
+		if (len) memcpy(tmp, this->buffer, this->len + 1);
+		delete[] this->buffer;
+		this->buffer = tmp;
+		if (this->len + b_len >= this->size)
+			Oversize(b_len);
 	}
 
 	void write(byte *bytes, int b_len) {
@@ -57,7 +50,7 @@ public:
 	}
 
 	long lenf() {
-		return len;
+		return this->len;
 	}
 
 	byte* fbuf() {

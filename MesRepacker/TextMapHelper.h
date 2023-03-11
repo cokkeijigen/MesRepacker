@@ -19,16 +19,16 @@ public:
     }
 
     void push(int pos, std::string str) {
+        replacestr(str, "\\n", "\n");
         this->textMaps->insert(std::make_pair(pos, str));
     }
 
     bool get(int pos, std::string& strbuf) {
-        auto mapos = this->textMaps->find(pos);
-        if (mapos != this->textMaps->end()) {
-            strbuf.assign(mapos->second);
-            return true;
-        }
-        else return false;
+        auto iter = this->textMaps->find(pos);
+        if (iter == this->textMaps->end())
+            return false;
+        strbuf.assign(iter->second);
+        return true;
     }
 
     bool size() {
