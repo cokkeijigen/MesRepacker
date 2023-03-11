@@ -23,12 +23,11 @@ public:
 
 	void Oversize(int b_len) {
 		if (this->len + b_len < this->size) return;
-		this->size += this->raise;
+		while ((this->len + b_len) > (this->size += this->raise));
 		byte* tmp = new byte[this->size];
 		if (len) memcpy(tmp, this->buffer, this->len + 1);
 		delete[] this->buffer;
 		this->buffer = tmp;
-		Oversize(b_len);
 	}
 
 	void write(byte *bytes, int b_len) {
