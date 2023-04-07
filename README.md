@@ -21,7 +21,7 @@
 | :-----| :----: |
 |D.S. -Dal Segno- | ds | 
 |D.C.4 ～ダ・カーポ4～ | dc4|
-|D.C.Ⅲ DreamDays|dc3dd|
+|D.C.III DreamDays|dc3dd|
 |D.C.III WithYou|dc3wy|
 |D.C.III RX-rated|dc3rx|
 |D.C.II P.S.|dc2pc|
