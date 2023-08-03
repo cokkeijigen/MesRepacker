@@ -24,7 +24,7 @@
 |D.C.III DreamDays|dc3dd|
 |D.C.III WithYou|dc3wy|
 |D.C.III RX-rated|dc3rx|
-|D.C.II P.S.|dc2pc|
+|D.C.II P.S.|dc2ps|
 |D.C.II To You|dc2ty|
 |D.C.II Spring Celebration|dc2sc|
 |D.C.II C.C. 音姫先生のどきどき特別授業|dc2ccotm|
