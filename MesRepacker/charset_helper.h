@@ -30,13 +30,4 @@ namespace charset_helper {
         }
     }
     #endif // _STRINGHELPER_H
-
-    void sj2utf8(const char* str) {
-        std::string result;
-        converts(result, 932, CP_UTF8);
-    }
-
-    void gbk2utf8(std::string& str) {
-        converts(str, 936, CP_UTF8);
-    }
 }
