@@ -48,7 +48,7 @@ namespace configuration::init {
 namespace configuration::repacker {
 	
 	std::string input_path;
-	uint32_t use_code_page   = 936;
+	uint32_t use_code_page = 936;
 	uint32_t text_max_length = 0;
 	uint32_t text_min_length = 0;
 	std::filesystem::path current_file;
@@ -76,7 +76,7 @@ namespace configuration::repacker {
 		return input_path.length() && std::filesystem::exists(input_path);
 	}
 
-	bool is_exists(std::string file) {
+	bool mes_is_exists(std::string file) {
 		current_file.assign(input_path) /= file.append(".mes");
 		return std::filesystem::exists(current_file);
 	}
@@ -86,6 +86,7 @@ namespace configuration::repacker {
 			use_code_page = std::stoi(cp_str);
 		} catch (const std::exception&) {}
 	}
+
 
 	void set_max_length(const char* max) {
 		try {
@@ -155,7 +156,7 @@ namespace configuration::mes {
 			offset_bfr,
 			0x5D31, "dcos",
 			{ 0x00, 0x2B },
-			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
+			{ 0xFF, 0xFF }, // 0xFF占位
 			{ 0x2C, 0x45 },
 			{ 0x46, 0x49 },
 			{ 0x4A, 0xFF },
@@ -243,11 +244,11 @@ namespace configuration::mes {
 			offset_bfr,
 			0x6331, "dcbs",
 			{ 0x00, 0x2B },
-			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
+			{ 0xFF, 0xFF }, // 0xFF占位
 			{ 0x2C, 0x48 },
 			{ 0x49, 0x4C },
 			{ 0x4D, 0xFF },
-			  0x00 // 鍗犱綅
+			  0x00 // 占位
 		});
 
 		configs.push_back({
@@ -269,7 +270,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 鍗犱綅
+			  0x00 // 占位
 			});
 
 		configs.push_back({
@@ -287,7 +288,7 @@ namespace configuration::mes {
 			offset_bfr,
 			0x6638, "dc2fy",
 			{ 0x00, 0x2E },
-			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
+			{ 0xFF, 0xFF }, // 0xFF占位
 			{ 0x2F, 0x4B },
 			{ 0x4C, 0x4F },
 			{ 0x50, 0xFF },
@@ -302,7 +303,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 鍗犱綅
+			  0x00 // 占位
 			});
 
 		configs.push_back({
@@ -313,7 +314,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 鍗犱綅
+			  0x00 // 占位
 			});
 
 		configs.push_back({

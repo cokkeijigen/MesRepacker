@@ -29,23 +29,23 @@ namespace worker {
 		if (configuration::repacker::exist_path()) {
 			using namespace configuration;
 			using namespace std::filesystem;
-			for (auto& file : directory_iterator(file_path)) {
-				std::string ext = file.path().extension().string();
-				std::string name = file.path().stem().string();
-				if (ext.empty() || ext != ".txt") continue;
-				if (!repacker::is_exists(name))   continue;
+			for (auto& f : directory_iterator(file_path)) {
+				std::string exts = f.path().extension().string();
+				std::string name = f.path().stem().string();
+				if (exts.empty() || exts != ".txt") continue;
+				if (!repacker::mes_is_exists(name)) continue;
 				try {
-					if (file::load_file(file.path().string())) {
+					if (file::load_file(f.path().string())) {
 						mes_helper::loader::file_repacker();
 						mes_helper::loader::mes_loading();
-						file::read_text_formats_to_maps();
+						file::read_text_formater_to_map();
 						mes_helper::loader::write_clear();
 						mes_helper::loader::import_text();
 						mes_helper::loader::out(work_path);
 						printf("mes saved: %s.mes\n", name.c_str());
 					}
 					else throw std::exception("read failure!");
-				} 
+				}
 				catch (std::exception& e) {
 					printf("%s: %s\n", name.c_str(), e.what());
 				}
@@ -56,7 +56,7 @@ namespace worker {
 		}
 	}
 
-	void exports_as_afile(std::filesystem::path path) {
+	void exporter_as_afile(std::filesystem::path path) {
 		std::string ext = path.extension().string();
 		std::string name = path.stem().string();
 		if (ext.empty() || ext != ".mes") return;
@@ -74,10 +74,10 @@ namespace worker {
 		}
 	}
 
-	void exports_as_multifile() {
+	void exporter_as_multifile() {
 		using namespace std::filesystem;
 		for (auto& file : directory_iterator(file_path)) {
-			exports_as_afile(file.path());
+			exporter_as_afile(file.path());
 		}
 		mes_helper::loader::cur_file = file_path;
 		mes_helper::loader::create_config();
@@ -86,7 +86,7 @@ namespace worker {
 
 	void opt_log(clock_t satrt, clock_t end) {
 		double run_time = (double)(end - satrt) / 1000;
-		std::cout << "\n--------------------------" << std::endl; 
+		std::cout << "\n--------------------------" << std::endl;
 		std::cout << "time consuming: " << run_time << std::endl;
 		std::cout << "MesRepacker ver " << _Version << std::endl;
 		std::cout << "https://github.com/cokkeijigen/MesRepacker";
@@ -100,10 +100,10 @@ namespace worker {
 			worker::run_repacker();
 		}
 		else if(std::filesystem::is_directory(file_path)){
-			worker::exports_as_multifile();
+			worker::exporter_as_multifile();
 		}
 		else if (std::filesystem::exists(file_path)) {
-			worker::exports_as_afile(file_path);
+			worker::exporter_as_afile(file_path);
 			mes_helper::loader::create_config();
 			mes_helper::loader::out(work_path);
 		}
@@ -114,9 +114,8 @@ namespace worker {
 int main(int argc, char* argv[]) {
 	clock_t start_t = clock();
 	try {
-		if (argc != 2) { 
-			//worker::init(argv[0], argv[1]);
-			worker::init(argv[0], "C:\\Users\\iTsukezigen\\Desktop\\testText\\dc3wy_text");
+		if (argc == 2) { 
+			worker::init(argv[0], argv[1]);
 			configuration::mes::init();
 			worker::on_handler_start();
 		}

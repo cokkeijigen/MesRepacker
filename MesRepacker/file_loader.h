@@ -21,7 +21,7 @@ namespace file {
 	void read_config(int, char* str) {
 		using namespace configuration;
 		file::text.assign(str).trim();
-		if (!text.get_length()||!text.get_c_strlen()) {
+		if (!text.get_length() || !text.get_c_strlen()) {
 			file::read_state = 0;
 		}
 		else if (text.equals(repacker::config::path)) {
@@ -55,12 +55,13 @@ namespace file {
 			repacker::set_max_length(text.get_c_str());
 		}
 		else if (repacker::config::r5(file::read_state)) {
-			repacker::add_replaces(text,  true);
+			repacker::add_replaces(text, true);
 		}
 		else if (repacker::config::r6(file::read_state)) {
 			repacker::add_replaces(text, false);
 		}
 	}
+
 
 	bool read_config_if_exists(std::string path) {
 		using namespace configuration::repacker::config;
@@ -71,7 +72,7 @@ namespace file {
 		file::text.replace(o.c_str(), n.c_str());
 	}
 
-	void read_text_formats_to_maps() {
+	void read_text_formater_to_map() {
 		using namespace configuration;
 		mes_helper::text_map::init();
 		int32_t position = 0, split = -1;
@@ -91,13 +92,13 @@ namespace file {
 				}
 			}
 			else if (file::read_state == 1) {
-				if (file::text.find(u8"â—Žâ˜…//") != -1) {
+				if (file::text.find(u8"¡ò¡ï//") != -1) {
 					file::read_state = 2;
 				}
 			}
 			else if (file::read_state == 2) {
 				using namespace mes_helper;
-				split = file::text.find(u8"â—Žâ˜…");
+				split = file::text.find(u8"¡ò¡ï");
 				if (split != -1 && position) {
 					text.assign((utf8str &) text.substr(split + 2));
 					repacker::replaces_foreach(run_replaces,  true);

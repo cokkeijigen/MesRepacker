@@ -13,8 +13,8 @@ namespace mes_helper::text {
 	using namespace StringHelper;
 	uint32_t max_length = 24;
 	uint32_t min_length = 22;
-	UTF8String begin_symbols(u8"ã€‚ã€ï¼Ÿâ€™â€ï¼Œï¼ï½ã€‘ï¼›ï¼šï¼‰ã€ã€");
-	UTF8String end_symbols  (u8"ï¼ˆ(ã€Œã€ã€â€˜â€œâ€¦");
+	UTF8String begin_symbols(u8"¡£¡¢£¿¡¯¡±£¬£¡¡«¡¿£»£º£©¡¹¡»");
+	UTF8String end_symbols  (u8"£¨(¡¸¡º¡¾¡®¡°¡­");
 
 	void config_init() {
 		using namespace configuration::repacker;
@@ -26,26 +26,26 @@ namespace mes_helper::text {
 
 	void __text_before_clear(UTF8String& text) {
 		text.trim()
-			.remove(u8"\\nã€€")
+			.remove(u8"\\n¡¡")
 			.remove(u8"\\n")
-			.replace(u8"/", u8"ï¼")
-			.replace(u8"{", u8"ï½›")
-			.replace(u8"}", u8"ï½")
+			.replace(u8"/", u8"£¯")
+			.replace(u8"{", u8"£û")
+			.replace(u8"}", u8"£ı")
 			.commit();
 	}
 
 	bool __is_talking(UTF8String& text) {
-		return (text.start_with(u8"ã€Œ") && text.end_with(u8"ã€")) ||
-			   (text.start_with(u8"ã€") && text.end_with(u8"ã€"));
+		return (text.start_with(u8"¡¸") && text.end_with(u8"¡¹")) ||
+			   (text.start_with(u8"¡º") && text.end_with(u8"¡»"));
 	}
 
 	void formater(const char* str, UTF8String* out_result_ptr, bool escape) {
 		if (!str || !out_result_ptr) return;
 		utf8str text(str), tmpstr, result;
 		__text_before_clear(text);
-		uint32_t length = text.get_length();
-		bool is_talking = __is_talking(text);
-		bool go_continue = false;
+		uint32_t length   = text.get_length();
+		bool is_talking   = __is_talking(text);
+		bool go_continue  = false;
 		bool add_new_line = false;
 		float add_w_count = 0;
 		uint32_t index = 0;
@@ -55,8 +55,8 @@ namespace mes_helper::text {
 			if (add_new_line) {
 				if (!begin_symbols.contains(tmp) && tmp != u8"\x20") {
 				_add_new_line:
-					result.append(escape ? u8"\\n" : u8"\n")
-						.append(is_talking ? u8"ã€€" : NULL);
+					result.append(escape ? u8"\\n" : u8"\n");
+					result.append(is_talking ? u8"¡¡" : NULL);
 					add_w_count = is_talking;
 					if (tmpstr.get_length()) {
 						result.append(tmpstr);
@@ -65,14 +65,14 @@ namespace mes_helper::text {
 					}
 					else if (go_continue) {
 						add_new_line = false;
-						go_continue = false;
+						go_continue  = false;
 						continue;
 					}
 				}
 			}
-			if (tmp == u8"ï½›") {
-				uint32_t center = text.find(u8"ï¼", index);
-				uint32_t end = text.find(u8"ï½", index + center);
+			if (tmp == u8"£û") {
+				uint32_t center = text.find(u8"£¯", index);
+				uint32_t end = text.find(u8"£ı", index + center);
 				if (center != -1 && end != -1) {
 					tmpstr = text.substrs(index, center + end + 1);
 					index = index + center + end;
@@ -173,7 +173,7 @@ namespace mes_helper::instance {
 			using namespace configuration;
 			for (mes_config& config : mes::configs) {
 				int32_t h_offset = config.offset(offset);
-				uint16_t head_t = readbuffer.get_int16(h_offset);
+				uint16_t head_t  = readbuffer.get_int16(h_offset);
 				*((uint8_t*)&head_t) ^= *(((uint8_t*)&head_t) + 1);
 				*(((uint8_t*)&head_t) + 1) ^= *((uint8_t*)&head_t);
 				*((uint8_t*)&head_t) ^= *(((uint8_t*)&head_t) + 1);
@@ -253,12 +253,13 @@ namespace mes_helper::loader {
 
 	void file_repacker() {
 		cur_file = configuration::repacker::current_file;
-		is_import_text = true;
-
+		out_config_file = false;
+		is_import_text  = true;
 	}
 
 	void file_exporter() {
 		is_import_text  = false;
+		out_config_file = false;
 		str_write_count = 0;
 	}
 
@@ -285,8 +286,8 @@ namespace mes_helper::loader {
 			const char* bf_str = str.get_c_str();
 			int32_t bf_size = strlen(bf_str) + 24;
 			wr_buf.format_write(u8"#0x%x\n", 24, pos);
-			wr_buf.format_write(u8"â˜…â—  %d  â—â˜…//%s\n", bf_size, count_num, bf_str);
-			wr_buf.format_write(u8"â˜…â—  %d  â—â˜…%s\n\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï//%s\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï%s\n\n", bf_size, count_num, bf_str);
 		}
 	}
 
@@ -388,8 +389,8 @@ namespace mes_helper::loader {
 		else if(config) {
 			path /= std::string((*config).name) + "_text";
 			if (out_config_file) {
-				out_config_file = false;
 				if (std::filesystem::exists(path)) {
+					out_config_file = false;
 					path /= ".MesRepacker";
 					goto _out;
 				}
