@@ -15,6 +15,12 @@ D:\xxxxx\xxxx\xxxx\MES
 #UseCodePage ; 导入需要转换的编码(CodePage), 使用-nsc之后将不支持
 936 ; 默认： utf-8(65001) -> gbk(936)
 
+#Text-MinLength ; 单行最小字数
+22  ; 默认
+
+#Text-MaxLength ; 单行最大字数
+24 ; 默认
+
 #Before-Replaces ; 格式化前替换文本
 []:[] ; 格式： [原来文本]:[替换文本] 支持替换多个，使用换行区分
 
