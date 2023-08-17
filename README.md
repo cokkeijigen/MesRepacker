@@ -4,12 +4,24 @@
 ### 导出文本
 将mes文件或者文件夹拖动到exe
 ### 导入文本
-首先确保你的文本格式为`#0xXXXX: 文本` 如下图所示  
-![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate.png)<br>
-然后放有文本的文件夹里包含`.MesRepacker`文件，这个文本内容是你的源（未修改）的mes路径 
+首先确保你的文本目录下存在`.MesRepacker`这个文件<br>
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate2.png)<br>
-导入编码默认是gbk，如需更改，请在文本第一行加入`#UseCodePage: xxx`，其中xxx为目标编码的cp值  
-最后将整个文件夹拖动到exe上即可  
+最后将整个文本目录到exe上即可<br>
+`.MesRepacker`参数详细<br>
+```
+#InputPath ; 这个是源（未修改）mes文件的目录
+D:\xxxxx\xxxx\xxxx\MES
+
+#UseCodePage ; 导入需要转换的编码(CodePage) 默认： utf-8(65001) -> gbk(936)
+936
+
+#Before-Replaces ; 格式化前替换文本
+[]:[] ; 格式： [原来文本]:[替换文本] 支持替换多个，使用换行区分
+
+#After-Replaces ; 格式化后替换文本
+[]:[] ; 格式同上
+
+```
 ***
 默认情况下，程序会将sj编码转换成utf8然后导出  
 此外还支持gbk转utf8，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
