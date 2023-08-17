@@ -1,5 +1,5 @@
 # MesRepacker
-### mes脚本重打包，本工具仅供技术学习交流使用，禁止一切不法使用！  
+### 重新打包MesScript中的文本，本工具仅供技术学习交流使用，禁止一切不法使用！  
 ***
 ### 导出文本
 将mes文件或者文件夹拖动到exe
@@ -7,7 +7,7 @@
 首先确保你的文本目录下存在`.MesRepacker`这个文件,然后将整个文本目录到exe上即可<br>
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/picture.png)<br>
 
-`.MesRepacker`参数详细<br>
+### `.MesRepacker`参数详细<br>
 ```
 #InputPath ; 这个是源（未修改）mes文件的目录
 D:\xxxxx\xxxx\xxxx\MES
