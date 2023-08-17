@@ -273,7 +273,7 @@ namespace mes_helper::loader {
 		}
 		else {
 			using namespace charset_helper;
-			converts(str, is_iput_gbk ? 936 : 932, 65001);
+			converts(str, is_input_gbk ? 936 : 932, 65001);
 			const char* bf_str = str.get_c_str();
 			int32_t bf_size = strlen(bf_str) + 24;
 			wr_buf.format_write(u8"#0x%x\n", 24, pos);
@@ -308,8 +308,8 @@ namespace mes_helper::loader {
 			}
 			if ((*configuration::init::config).str.with(cmd.key)) { // test
 				continue;
-				std::string str(buffer + cmd.pos + 1);
-				std::cout << "key:" << std::hex << (int32_t)cmd.key << " " << str << std::endl;
+				//std::string str(buffer + cmd.pos + 1);
+				//std::cout << "key:" << std::hex << (int32_t)cmd.key << " " << str << std::endl;
 			}
 		}
 	}
@@ -386,7 +386,6 @@ namespace mes_helper::loader {
 			}
 			if (out_path_create(path, ".txt")) goto _out;
 		} 
-	_err:
 		throw std::exception("Failed to create file!");
 	_out:
 		wr_buf.out_file(path.string().c_str());

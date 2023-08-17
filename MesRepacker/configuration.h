@@ -34,14 +34,14 @@ namespace configuration {
 namespace configuration::init {
 	mes_config* config  = NULL;
 	bool is_not_convert = false;
-	bool is_iput_gbk    = false;
+	bool is_input_gbk   = false;
 
 	void find_not_convert(std::string exe_name) {
 		is_not_convert = exe_name.find("-nsc") != std::string::npos;
 	}
 
 	void find_iput_gbk(std::string exe_name) {
-		is_iput_gbk = exe_name.find("-igbk") != std::string::npos;
+		is_input_gbk = exe_name.find("-igbk") != std::string::npos;
 	}
 }
 
