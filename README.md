@@ -12,8 +12,8 @@
 #InputPath ; 这个是源（未修改）mes文件的目录
 D:\xxxxx\xxxx\xxxx\MES
 
-#UseCodePage ; 导入需要转换的编码(CodePage) 默认： utf-8(65001) -> gbk(936)
-936
+#UseCodePage ; 导入需要转换的编码(CodePage), 使用-nsc之后将不支持
+936 ; 默认： utf-8(65001) -> gbk(936)
 
 #Before-Replaces ; 格式化前替换文本
 []:[] ; 格式： [原来文本]:[替换文本] 支持替换多个，使用换行区分
