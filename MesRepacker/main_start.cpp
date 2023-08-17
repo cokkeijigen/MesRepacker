@@ -29,13 +29,13 @@ namespace worker {
 		if (configuration::repacker::exist_path()) {
 			using namespace configuration;
 			using namespace std::filesystem;
-			for (auto& i : directory_iterator(file_path)) {
-				std::string ext = i.path().extension().string();
-				std::string name = i.path().stem().string();
+			for (auto& file : directory_iterator(file_path)) {
+				std::string ext = file.path().extension().string();
+				std::string name = file.path().stem().string();
 				if (ext.empty() || ext != ".txt") continue;
 				if (!repacker::is_exists(name))   continue;
 				try {
-					if (file::load_file(i.path().string())) {
+					if (file::load_file(file.path().string())) {
 						mes_helper::loader::file_repacker();
 						mes_helper::loader::mes_loading();
 						file::read_text_formater_to_map();
