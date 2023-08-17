@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 namespace file {
 
@@ -92,13 +92,13 @@ namespace file {
 				}
 			}
 			else if (file::read_state == 1) {
-				if (file::text.find(u8"¡ò¡ï//") != -1) {
+				if (file::text.find(u8"â—Žâ˜…//") != -1) {
 					file::read_state = 2;
 				}
 			}
 			else if (file::read_state == 2) {
 				using namespace mes_helper;
-				split = file::text.find(u8"¡ò¡ï");
+				split = file::text.find(u8"â—Žâ˜…");
 				if (split != -1 && position) {
 					text.assign((utf8str &) text.substr(split + 2));
 					repacker::replaces_foreach(run_replaces,  true);

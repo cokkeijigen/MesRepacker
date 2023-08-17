@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 namespace mes_helper {
 	
 	struct command {
@@ -13,8 +13,8 @@ namespace mes_helper::text {
 	using namespace StringHelper;
 	uint32_t max_length = 24;
 	uint32_t min_length = 22;
-	UTF8String begin_symbols(u8"¡£¡¢£¿¡¯¡±£¬£¡¡«¡¿£»£º£©¡¹¡»");
-	UTF8String end_symbols  (u8"£¨(¡¸¡º¡¾¡®¡°¡­");
+	UTF8String begin_symbols(u8"ã€‚ã€ï¼Ÿâ€™â€ï¼Œï¼ï½ã€‘ï¼›ï¼šï¼‰ã€ã€");
+	UTF8String end_symbols  (u8"ï¼ˆ(ã€Œã€ã€â€˜â€œâ€¦");
 
 	void config_init() {
 		using namespace configuration::repacker;
@@ -26,17 +26,17 @@ namespace mes_helper::text {
 
 	void __text_before_clear(UTF8String& text) {
 		text.trim()
-			.remove(u8"\\n¡¡")
+			.remove(u8"\\nã€€")
 			.remove(u8"\\n")
-			.replace(u8"/", u8"£¯")
-			.replace(u8"{", u8"£û")
-			.replace(u8"}", u8"£ı")
+			.replace(u8"/", u8"ï¼")
+			.replace(u8"{", u8"ï½›")
+			.replace(u8"}", u8"ï½")
 			.commit();
 	}
 
 	bool __is_talking(UTF8String& text) {
-		return (text.start_with(u8"¡¸") && text.end_with(u8"¡¹")) ||
-			   (text.start_with(u8"¡º") && text.end_with(u8"¡»"));
+		return (text.start_with(u8"ã€Œ") && text.end_with(u8"ã€")) ||
+			   (text.start_with(u8"ã€") && text.end_with(u8"ã€"));
 	}
 
 	void formater(const char* str, UTF8String* out_result_ptr, bool escape) {
@@ -56,7 +56,7 @@ namespace mes_helper::text {
 				if (!begin_symbols.contains(tmp) && tmp != u8"\x20") {
 				_add_new_line:
 					result.append(escape ? u8"\\n" : u8"\n");
-					result.append(is_talking ? u8"¡¡" : NULL);
+					result.append(is_talking ? u8"ã€€" : NULL);
 					add_w_count = is_talking;
 					if (tmpstr.get_length()) {
 						result.append(tmpstr);
@@ -70,9 +70,9 @@ namespace mes_helper::text {
 					}
 				}
 			}
-			if (tmp == u8"£û") {
-				uint32_t center = text.find(u8"£¯", index);
-				uint32_t end = text.find(u8"£ı", index + center);
+			if (tmp == u8"ï½›") {
+				uint32_t center = text.find(u8"ï¼", index);
+				uint32_t end = text.find(u8"ï½", index + center);
 				if (center != -1 && end != -1) {
 					tmpstr = text.substrs(index, center + end + 1);
 					index = index + center + end;
@@ -286,8 +286,8 @@ namespace mes_helper::loader {
 			const char* bf_str = str.get_c_str();
 			int32_t bf_size = strlen(bf_str) + 24;
 			wr_buf.format_write(u8"#0x%x\n", 24, pos);
-			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï//%s\n", bf_size, count_num, bf_str);
-			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï%s\n\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"â˜…â—  %d  â—â˜…//%s\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"â˜…â—  %d  â—â˜…%s\n\n", bf_size, count_num, bf_str);
 		}
 	}
 
