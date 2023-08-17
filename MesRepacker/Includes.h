@@ -1,17 +1,17 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
+
+// system libray
 #include <Windows.h>
 #include <iostream>
-#include <algorithm>
+#include <filesystem>
+#include <string>
 #include <vector>
 #include <map>
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <filesystem>
-#include "StringHelper.h"
-#include "TextMapHelper.h"
-#include "ReadBuffer.h"
-#include "WriteBuffer.h"
-#include "MesConf.h"
-#include "MesHelper.h"
+
+// created header file
+#include "file_helper.h"
+#include "string_hepler.h"
+#include "charset_helper.h"
+#include "configuration.h"
+#include "mes_helper.h"
+#include "file_loader.h"
