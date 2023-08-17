@@ -19,6 +19,7 @@
 将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe`// 配置为dc4
 | 游戏| 简称 | 
 | :-----| :----: |
+|Eternal Fantasy | ef | 
 |D.S. -Dal Segno- | ds | 
 |D.C.4 ～ダ・カーポ4～ | dc4|
 |D.C.III DreamDays|dc3dd|
@@ -36,7 +37,7 @@
 |D.C.A.S. 〜ダ・カーポ〜アフターシーズンズ|dcas|
 |D.C. Dream X’mas|dcdx|
 |D.C.〜ダ・カーポ〜　MEMORIES DISC|dcmems|
-|Ｄ．Ｃ．Ｐ．Ｃ．(Vista)|dcpcv|
+|Ｄ．Ｃ．Ｐ．Ｃ．(Vista)|dcpc|
 |D.C. Summer Vacation|dcsv|
 |D.C.WhiteSeason|dcws|
 |ことり Love Ex P|ktlep|
