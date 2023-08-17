@@ -56,7 +56,7 @@ namespace worker {
 		}
 	}
 
-	void exporter_as_afile(std::filesystem::path path) {
+	void exports_as_afile(std::filesystem::path path) {
 		std::string ext = path.extension().string();
 		std::string name = path.stem().string();
 		if (ext.empty() || ext != ".mes") return;
@@ -74,10 +74,10 @@ namespace worker {
 		}
 	}
 
-	void exporter_as_multifile() {
+	void exports_as_multifile() {
 		using namespace std::filesystem;
 		for (auto& file : directory_iterator(file_path)) {
-			exporter_as_afile(file.path());
+			exports_as_afile(file.path());
 		}
 		mes_helper::loader::cur_file = file_path;
 		mes_helper::loader::create_config();
@@ -86,7 +86,7 @@ namespace worker {
 
 	void opt_log(clock_t satrt, clock_t end) {
 		double run_time = (double)(end - satrt) / 1000;
-		std::cout << "\n--------------------------" << std::endl;
+		std::cout << "\n--------------------------" << std::endl; 
 		std::cout << "time consuming: " << run_time << std::endl;
 		std::cout << "MesRepacker ver " << _Version << std::endl;
 		std::cout << "https://github.com/cokkeijigen/MesRepacker";
@@ -99,10 +99,10 @@ namespace worker {
 			worker::run_repacker();
 		}
 		else if(std::filesystem::is_directory(file_path)){
-			worker::exporter_as_multifile();
+			worker::exports_as_multifile();
 		}
 		else if (std::filesystem::exists(file_path)) {
-			worker::exporter_as_afile(file_path);
+			worker::exports_as_afile(file_path);
 			mes_helper::loader::create_config();
 			mes_helper::loader::out(work_path);
 		}
