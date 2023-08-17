@@ -35,8 +35,14 @@ namespace mes_helper::text {
 	}
 
 	bool __is_talking(UTF8String& text) {
-		return (text.start_with(u8"「") && text.end_with(u8"」")) ||
-			   (text.start_with(u8"『") && text.end_with(u8"』"));
+		const char* start[] = { u8"「" , u8"『", u8"“"};
+		const char* end[]   = { u8"」" , u8"』", u8"”"};
+		for (uint8_t i = 0; i < 3; i++) {
+			if (text.start_with(start[i]) && text.end_with(end[i])) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void formater(const char* str, UTF8String* out_result_ptr, bool escape) {
