@@ -5,7 +5,7 @@
 将mes文件或者文件夹拖动到exe
 ### 导入文本
 首先确保你的文本目录下存在`.MesRepacker`这个文件,然后将整个文本目录到exe上即可<br>
-![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/demonstrate.png)<br>
+![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/picture.png)<br>
 
 `.MesRepacker`参数详细<br>
 ```
