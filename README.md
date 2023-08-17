@@ -7,7 +7,7 @@
 首先确保你的文本目录下存在`.MesRepacker`这个文件,然后将整个文本目录到exe上即可<br>
 ![Image text](https://github.com/cokkeijigen/MesRepacker/blob/main/picture.png)<br>
 
-`.MesRepacker`参数详细<br>
+### `.MesRepacker`参数详细<br>
 ```
 #InputPath ; 这个是源（未修改）mes文件的目录
 D:\xxxxx\xxxx\xxxx\MES
