@@ -343,7 +343,8 @@ namespace mes_helper::loader {
 
 	void create_config() {
 		loader::write_clear();
-		std::string input_path(cur_file.parent_path().string());
+		std::string input_path(std::filesystem::is_directory(cur_file)
+			? cur_file.string() : cur_file.parent_path().string());
 		char* bf_str = (char*)input_path.c_str();
 		int32_t bf_size = strlen(bf_str) + 24;
 		wr_buf.format_write("#InputPath\n%s\n\n", bf_size, bf_str);
