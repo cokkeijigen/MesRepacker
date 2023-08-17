@@ -42,7 +42,7 @@ namespace worker {
 						mes_helper::loader::write_clear();
 						mes_helper::loader::import_text();
 						mes_helper::loader::out(work_path);
-						printf("mes saved: %s.mes\n", name.c_str());
+						printf("saved: %s.mes\n", name.c_str());
 					}
 					else throw std::exception("read failure!");
 				}
@@ -67,7 +67,7 @@ namespace worker {
 			mes_helper::loader::write_clear();
 			mes_helper::loader::export_text();
 			mes_helper::loader::out(work_path);
-			printf("text saved: %s.txt\n", name.c_str());
+			printf("saved: %s.txt\n", name.c_str());
 		}
 		catch (std::exception& e) {
 			printf("%s.mes: %s\n", name.c_str(), e.what());
