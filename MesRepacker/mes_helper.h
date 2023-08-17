@@ -11,24 +11,32 @@ namespace mes_helper {
 namespace mes_helper::text {
 
 	using namespace StringHelper;
-	const uint32_t max_length = 24;
-	const uint32_t mim_length = 22;
-	UTF8String begin_symbols(u8"¡£¡¢£¿¡¯¡±£¬£¡¡«¡¿£»£º£©¡¹¡»");
-	UTF8String end_symbols  (u8"£¨(¡¸¡º¡¾¡®¡°¡­");
+	uint32_t max_length = 24;
+	uint32_t min_length = 22;
+	UTF8String begin_symbols(u8"ã€‚ã€ï¼Ÿâ€™â€ï¼Œï¼ï½žã€‘ï¼›ï¼šï¼‰ã€ã€");
+	UTF8String end_symbols  (u8"ï¼ˆ(ã€Œã€Žã€â€˜â€œâ€¦");
+
+	void config_init() {
+		using namespace configuration::repacker;
+		if (text_max_length > 0 && text_min_length > 0 && text_min_length <= text_max_length) {
+			mes_helper::text::max_length = text_max_length;
+			mes_helper::text::min_length = text_min_length;
+		}
+	}
 
 	void __text_before_clear(UTF8String& text) {
 		text.trim()
-			.remove(u8"\\n¡¡")
+			.remove(u8"\\nã€€")
 			.remove(u8"\\n")
-			.replace(u8"/", u8"£¯")
-			.replace(u8"{", u8"£û")
-			.replace(u8"}", u8"£ý")
+			.replace(u8"/", u8"ï¼")
+			.replace(u8"{", u8"ï½›")
+			.replace(u8"}", u8"ï½")
 			.commit();
 	}
 
 	bool __is_talking(UTF8String& text) {
-		return (text.start_with(u8"¡¸") && text.end_with(u8"¡¹")) ||
-			   (text.start_with(u8"¡º") && text.end_with(u8"¡»"));
+		return (text.start_with(u8"ã€Œ") && text.end_with(u8"ã€")) ||
+			   (text.start_with(u8"ã€Ž") && text.end_with(u8"ã€"));
 	}
 
 	void formater(const char* str, UTF8String* out_result_ptr, bool escape) {
@@ -48,7 +56,7 @@ namespace mes_helper::text {
 				if (!begin_symbols.contains(tmp) && tmp != u8"\x20") {
 				_add_new_line:
 					result.append(escape ? u8"\\n" : u8"\n")
-						.append(is_talking ? u8"¡¡" : NULL);
+						.append(is_talking ? u8"ã€€" : NULL);
 					add_w_count = is_talking;
 					if (tmpstr.get_length()) {
 						result.append(tmpstr);
@@ -62,9 +70,9 @@ namespace mes_helper::text {
 					}
 				}
 			}
-			if (tmp == u8"£û") {
-				uint32_t center = text.find(u8"£¯", index);
-				uint32_t end = text.find(u8"£ý", index + center);
+			if (tmp == u8"ï½›") {
+				uint32_t center = text.find(u8"ï¼", index);
+				uint32_t end = text.find(u8"ï½", index + center);
 				if (center != -1 && end != -1) {
 					tmpstr = text.substrs(index, center + end + 1);
 					index = index + center + end;
@@ -105,7 +113,7 @@ namespace mes_helper::text {
 				add_w_count++;
 				result.append(tmp);
 			}
-			if (add_new_line = (add_w_count >= (float)mim_length)) {
+			if (add_new_line = (add_w_count >= (float)min_length)) {
 				if (end_symbols.contains(tmp)) {
 					go_continue = true;
 					goto _add_new_line;
@@ -277,8 +285,8 @@ namespace mes_helper::loader {
 			const char* bf_str = str.get_c_str();
 			int32_t bf_size = strlen(bf_str) + 24;
 			wr_buf.format_write(u8"#0x%x\n", 24, pos);
-			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï//%s\n", bf_size, count_num, bf_str);
-			wr_buf.format_write(u8"¡ï¡ò  %d  ¡ò¡ï%s\n\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"â˜…â—Ž  %d  â—Žâ˜…//%s\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"â˜…â—Ž  %d  â—Žâ˜…%s\n\n", bf_size, count_num, bf_str);
 		}
 	}
 
@@ -349,6 +357,8 @@ namespace mes_helper::loader {
 		int32_t bf_size = strlen(bf_str) + 24;
 		wr_buf.format_write("#InputPath\n%s\n\n", bf_size, bf_str);
 		wr_buf.write_text("#UseCodePage\n936\n\n");
+		wr_buf.write_text("#Text-MinLength\n22\n\n");
+		wr_buf.write_text("#Text-MaxLength\n24\n\n");
 		wr_buf.write_text("#Before-Replaces\n[]:[]\n\n");
 		wr_buf.write_text("#After-Replaces\n[]:[]\n");
 		loader::out_config_file = true;

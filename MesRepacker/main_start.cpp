@@ -38,14 +38,14 @@ namespace worker {
 					if (file::load_file(file.path().string())) {
 						mes_helper::loader::file_repacker();
 						mes_helper::loader::mes_loading();
-						file::read_text_formater_to_map();
+						file::read_text_formats_to_maps();
 						mes_helper::loader::write_clear();
 						mes_helper::loader::import_text();
 						mes_helper::loader::out(work_path);
 						printf("mes saved: %s.mes\n", name.c_str());
 					}
 					else throw std::exception("read failure!");
-				}
+				} 
 				catch (std::exception& e) {
 					printf("%s: %s\n", name.c_str(), e.what());
 				}
@@ -96,6 +96,7 @@ namespace worker {
 
 	void on_handler_start() {
 		if (file::read_config_if_exists(file_path)) {
+			mes_helper::text::config_init();
 			worker::run_repacker();
 		}
 		else if(std::filesystem::is_directory(file_path)){
@@ -113,8 +114,9 @@ namespace worker {
 int main(int argc, char* argv[]) {
 	clock_t start_t = clock();
 	try {
-		if (argc == 2) { 
-			worker::init(argv[0], argv[1]);
+		if (argc != 2) { 
+			//worker::init(argv[0], argv[1]);
+			worker::init(argv[0], "C:\\Users\\iTsukezigen\\Desktop\\testText\\dc3wy_text");
 			configuration::mes::init();
 			worker::on_handler_start();
 		}

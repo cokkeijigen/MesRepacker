@@ -48,7 +48,9 @@ namespace configuration::init {
 namespace configuration::repacker {
 	
 	std::string input_path;
-	uint32_t use_code_page = 936;
+	uint32_t use_code_page   = 936;
+	uint32_t text_max_length = 0;
+	uint32_t text_min_length = 0;
 	std::filesystem::path current_file;
 	std::map<std::string, std::string> befors_replaces;
 	std::map<std::string, std::string> after_replaces;
@@ -57,6 +59,8 @@ namespace configuration::repacker {
 		typedef bool(*f)(uint8_t);
 		const char* path = u8"#InputPath";
 		const char* cdpg = u8"#UseCodePage";
+		const char* tmin = u8"#Text-MinLength";
+		const char* tmax = u8"#Text-MaxLength";
 		const char* bfrp = u8"#Before-Replaces";
 		const char* atrp = u8"#After-Replaces";
 		const char* name = u8"\\.MesRepacker";
@@ -64,6 +68,8 @@ namespace configuration::repacker {
 		f r2 = [](uint8_t s) -> bool { return s == 2; };
 		f r3 = [](uint8_t s) -> bool { return s == 3; };
 		f r4 = [](uint8_t s) -> bool { return s == 4; };
+		f r5 = [](uint8_t s) -> bool { return s == 5; };
+		f r6 = [](uint8_t s) -> bool { return s == 6; };
 	}
 
 	bool exist_path() {
@@ -79,6 +85,20 @@ namespace configuration::repacker {
 		try {
 			use_code_page = std::stoi(cp_str);
 		} catch (const std::exception&) {}
+	}
+
+	void set_max_length(const char* max) {
+		try {
+			text_max_length = std::stoi(max);
+		}
+		catch (const std::exception&) {}
+	}
+
+	void set_min_length(const char* max) {
+		try {
+			text_min_length = std::stoi(max);
+		}
+		catch (const std::exception&) {}
 	}
 
 	void add_replaces(StringHelper::UTF8String & text, bool is_before) {
@@ -135,7 +155,7 @@ namespace configuration::mes {
 			offset_bfr,
 			0x5D31, "dcos",
 			{ 0x00, 0x2B },
-			{ 0xFF, 0xFF }, // 0xFF占位
+			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
 			{ 0x2C, 0x45 },
 			{ 0x46, 0x49 },
 			{ 0x4A, 0xFF },
@@ -223,11 +243,11 @@ namespace configuration::mes {
 			offset_bfr,
 			0x6331, "dcbs",
 			{ 0x00, 0x2B },
-			{ 0xFF, 0xFF }, // 0xFF占位
+			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
 			{ 0x2C, 0x48 },
 			{ 0x49, 0x4C },
 			{ 0x4D, 0xFF },
-			  0x00 // 占位
+			  0x00 // 鍗犱綅
 		});
 
 		configs.push_back({
@@ -249,7 +269,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 占位
+			  0x00 // 鍗犱綅
 			});
 
 		configs.push_back({
@@ -267,7 +287,7 @@ namespace configuration::mes {
 			offset_bfr,
 			0x6638, "dc2fy",
 			{ 0x00, 0x2E },
-			{ 0xFF, 0xFF }, // 0xFF占位
+			{ 0xFF, 0xFF }, // 0xFF鍗犱綅
 			{ 0x2F, 0x4B },
 			{ 0x4C, 0x4F },
 			{ 0x50, 0xFF },
@@ -282,7 +302,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 占位
+			  0x00 // 鍗犱綅
 			});
 
 		configs.push_back({
@@ -293,7 +313,7 @@ namespace configuration::mes {
 			{ 0x32, 0x4C },
 			{ 0x4D, 0x50 },
 			{ 0x51, 0xFF },
-			  0x00 // 占位
+			  0x00 // 鍗犱綅
 			});
 
 		configs.push_back({

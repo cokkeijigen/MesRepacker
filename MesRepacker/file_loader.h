@@ -30,11 +30,17 @@ namespace file {
 		else if (text.equals(repacker::config::cdpg)) {
 			file::read_state = 2;
 		}
-		else if (text.equals(repacker::config::bfrp)) {
+		else if (text.equals(repacker::config::tmin)) {
 			file::read_state = 3;
 		}
-		else if (text.equals(repacker::config::atrp)) {
+		else if (text.equals(repacker::config::tmax)) {
 			file::read_state = 4;
+		}
+		else if (text.equals(repacker::config::bfrp)) {
+			file::read_state = 5;
+		}
+		else if (text.equals(repacker::config::atrp)) {
+			file::read_state = 6;
 		}
 		else if (repacker::config::r1(file::read_state)) {
 			repacker::input_path.assign(str);
@@ -43,9 +49,15 @@ namespace file {
 			repacker::set_code_pege(text.get_c_str());
 		}
 		else if (repacker::config::r3(file::read_state)) {
-			repacker::add_replaces(text, true);
+			repacker::set_min_length(text.get_c_str());
 		}
 		else if (repacker::config::r4(file::read_state)) {
+			repacker::set_max_length(text.get_c_str());
+		}
+		else if (repacker::config::r5(file::read_state)) {
+			repacker::add_replaces(text,  true);
+		}
+		else if (repacker::config::r6(file::read_state)) {
 			repacker::add_replaces(text, false);
 		}
 	}
@@ -59,7 +71,7 @@ namespace file {
 		file::text.replace(o.c_str(), n.c_str());
 	}
 
-	void read_text_formater_to_map() {
+	void read_text_formats_to_maps() {
 		using namespace configuration;
 		mes_helper::text_map::init();
 		int32_t position = 0, split = -1;
@@ -79,13 +91,13 @@ namespace file {
 				}
 			}
 			else if (file::read_state == 1) {
-				if (file::text.find(u8"¡ò¡ï//") != -1) {
+				if (file::text.find(u8"â—Žâ˜…//") != -1) {
 					file::read_state = 2;
 				}
 			}
 			else if (file::read_state == 2) {
 				using namespace mes_helper;
-				split = file::text.find(u8"¡ò¡ï");
+				split = file::text.find(u8"â—Žâ˜…");
 				if (split != -1 && position) {
 					text.assign((utf8str &) text.substr(split + 2));
 					repacker::replaces_foreach(run_replaces,  true);
