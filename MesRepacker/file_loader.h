@@ -21,7 +21,7 @@ namespace file {
 	void read_config(int, char* str) {
 		using namespace configuration;
 		file::text.assign(str).trim();
-		if (!text.get_length() || !text.get_c_strlen()) {
+		if (!text.get_length()||!text.get_c_strlen()) {
 			file::read_state = 0;
 		}
 		else if (text.equals(repacker::config::path)) {
@@ -62,7 +62,6 @@ namespace file {
 		}
 	}
 
-
 	bool read_config_if_exists(std::string path) {
 		using namespace configuration::repacker::config;
 		return file::read_file(path.append(name), read_config);
@@ -72,7 +71,7 @@ namespace file {
 		file::text.replace(o.c_str(), n.c_str());
 	}
 
-	void read_text_formater_to_map() {
+	void read_text_formats_to_maps() {
 		using namespace configuration;
 		mes_helper::text_map::init();
 		int32_t position = 0, split = -1;

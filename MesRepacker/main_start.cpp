@@ -38,7 +38,7 @@ namespace worker {
 					if (file::load_file(f.path().string())) {
 						mes_helper::loader::file_repacker();
 						mes_helper::loader::mes_loading();
-						file::read_text_formater_to_map();
+						file::read_text_formats_to_maps();
 						mes_helper::loader::write_clear();
 						mes_helper::loader::import_text();
 						mes_helper::loader::out(work_path);
@@ -56,7 +56,7 @@ namespace worker {
 		}
 	}
 
-	void exporter_as_afile(std::filesystem::path path) {
+	void exports_as_afile(std::filesystem::path path) {
 		std::string ext = path.extension().string();
 		std::string name = path.stem().string();
 		if (ext.empty() || ext != ".mes") return;
@@ -74,10 +74,10 @@ namespace worker {
 		}
 	}
 
-	void exporter_as_multifile() {
+	void exports_as_multifile() {
 		using namespace std::filesystem;
 		for (auto& file : directory_iterator(file_path)) {
-			exporter_as_afile(file.path());
+			exports_as_afile(file.path());
 		}
 		mes_helper::loader::cur_file = file_path;
 		mes_helper::loader::create_config();
@@ -100,10 +100,10 @@ namespace worker {
 			worker::run_repacker();
 		}
 		else if(std::filesystem::is_directory(file_path)){
-			worker::exporter_as_multifile();
+			worker::exports_as_multifile();
 		}
 		else if (std::filesystem::exists(file_path)) {
-			worker::exporter_as_afile(file_path);
+			worker::exports_as_afile(file_path);
 			mes_helper::loader::create_config();
 			mes_helper::loader::out(work_path);
 		}
