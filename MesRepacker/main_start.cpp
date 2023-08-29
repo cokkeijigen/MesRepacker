@@ -31,6 +31,7 @@ namespace worker {
 			using namespace std::filesystem;
 			for (auto& f : directory_iterator(file_path)) {
 				std::string exts = f.path().extension().string();
+				transform(exts.begin(), exts.end(), exts.begin(), tolower);
 				std::string name = f.path().stem().string();
 				if (exts.empty() || exts != ".txt") continue;
 				if (!repacker::mes_is_exists(name)) continue;
@@ -57,10 +58,10 @@ namespace worker {
 	}
 
 	void exports_as_afile(std::filesystem::path path) {
-		std::string ext = path.extension().string();
+		std::string exts = path.extension().string();
+		transform(exts.begin(), exts.end(), exts.begin(), tolower);
 		std::string name = path.stem().string();
-		transform(ext.begin(), ext.end(), ext.begin(), tolower);
-		if (ext.empty() || ext != ".mes") return;
+		if (exts.empty() || exts != ".mes") return;
 		try {
 			mes_helper::loader::cur_file = path;
 			mes_helper::loader::file_exporter();
