@@ -1038,4 +1038,4 @@ namespace StringHelper {
 #define sstr_new_ptr(str, c_set) new StringHelper::String((const char*)str, c_set)
 #define utf8str_new(str) StringHelper::UTF8String((const char*)str)
 #define utf8str_new_ptr(str) new StringHelper::UTF8String((const char*)str)
-#define del_sstr_ptr(_str_ptr) delete _str_ptr
+#define delete_ptr(_ptr) delete _ptr

@@ -35,8 +35,8 @@ namespace mes_helper::text {
 	}
 
 	bool __is_talking(UTF8String& text) {
-		const char* start[] = { u8"「" , u8"『", u8"“"};
-		const char* end[]   = { u8"」" , u8"』", u8"”"};
+		const char* start[] = { u8"「" , u8"『", u8"“" };
+		const char* end[]   = { u8"」" , u8"』", u8"”" };
 		for (uint8_t i = 0; i < 3; i++) {
 			if (text.start_with(start[i]) && text.end_with(end[i])) {
 				return true;
@@ -127,7 +127,7 @@ namespace mes_helper::text {
 			}
 			index++;
 		}
-		out_result_ptr->assign(result);
+		(*out_result_ptr).assign(result);
 	}
 }
 
@@ -322,7 +322,7 @@ namespace mes_helper::loader {
 				continue;
 			}
 			if ((*configuration::init::config).str.with(cmd.key)) { // test
-				continue;
+				//continue;
 				//std::string str(buffer + cmd.pos + 1);
 				//std::cout << "key:" << std::hex << (int32_t)cmd.key << " " << str << std::endl;
 			}
@@ -402,8 +402,8 @@ namespace mes_helper::loader {
 				}
 			}
 			if (out_path_create(path, ".txt")) goto _out;
-		} 
-		throw std::exception("Failed to create file!");
+		}
+		throw std::exception("Failed to create file or The mes file version is not supported!");
 	_out:
 		wr_buf.out_file(path.string().c_str());
 

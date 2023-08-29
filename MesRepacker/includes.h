@@ -1,6 +1,6 @@
 #pragma once
 
-// system libray
+// system library
 #include <Windows.h>
 #include <iostream>
 #include <filesystem>

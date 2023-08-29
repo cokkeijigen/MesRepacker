@@ -53,7 +53,7 @@ namespace configuration::repacker {
 	uint32_t text_min_length = 0;
 	std::filesystem::path current_file;
 	std::map<std::string, std::string> befors_replaces;
-	std::map<std::string, std::string> after_replaces;
+	std::map<std::string, std::string> after_replaces ;
 
 	namespace config {
 		typedef bool(*f)(uint8_t);
@@ -414,6 +414,17 @@ namespace configuration::mes {
 			{ 0x5F, 0x62 },
 			{ 0x63, 0xFF },
 			  0x54
+		});
+
+		configs.push_back({
+			offset_aft,
+			0xA1A1, "dsif",
+			{ 0x00, 0x39 },
+			{ 0x3A, 0x42 },
+			{ 0x43, 0x60 },
+			{ 0x61, 0x64 },
+			{ 0x65, 0xFF },
+			  0x56
 		});
 	}
 

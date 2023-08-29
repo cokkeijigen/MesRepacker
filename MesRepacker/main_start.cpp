@@ -59,6 +59,7 @@ namespace worker {
 	void exports_as_afile(std::filesystem::path path) {
 		std::string ext = path.extension().string();
 		std::string name = path.stem().string();
+		transform(ext.begin(), ext.end(), ext.begin(), tolower);
 		if (ext.empty() || ext != ".mes") return;
 		try {
 			mes_helper::loader::cur_file = path;
@@ -109,6 +110,7 @@ namespace worker {
 		}
 		else throw std::exception("Unknown error!");
 	}
+
 }
 
 int main(int argc, char* argv[]) {
