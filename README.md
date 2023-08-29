@@ -37,6 +37,7 @@ D:\xxxxx\xxxx\xxxx\MES
 将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe`// 配置为dc4
 | 游戏| 简称 | 
 | :-----| :----: |
+|D.S.i.F. -Dal Segno-| dsif | 
 |Eternal Fantasy | ef | 
 |D.S. -Dal Segno- | ds | 
 |D.C.4 ～ダ・カーポ4～ | dc4|
