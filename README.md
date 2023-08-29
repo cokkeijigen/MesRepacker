@@ -16,7 +16,7 @@ D:\xxxxx\xxxx\xxxx\MES
 936 ; 默认： utf-8(65001) -> gbk(936)
 
 #Text-MinLength ; 单行最小字数
-22  ; 默认
+22 ; 默认
 
 #Text-MaxLength ; 单行最大字数
 24 ; 默认
