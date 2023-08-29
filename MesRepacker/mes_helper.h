@@ -148,8 +148,10 @@ namespace mes_helper::text_map {
 	}
 
 	void add(int32_t pos, std::string text) {
-		text_map::text_converts(text);
-		text_map.insert(std::make_pair(pos, text));
+		if (!text.empty() && text.size() > 0) {
+			text_map::text_converts(text);
+			text_map.insert(std::make_pair(pos, text));
+		}
 	}
 
 	bool get(int32_t pos, std::string& text) {
