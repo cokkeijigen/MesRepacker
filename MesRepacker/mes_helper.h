@@ -338,7 +338,7 @@ namespace mes_helper::loader {
 			if (text_map::get(cmd.pos, text)) {
 				wr_buf.write_int8(cmd.key);
 				int8_t* bfstr = (int8_t*)text.c_str();
-				size_t length = strlen((char*) bfstr);
+				size_t length = text.length();
 				if ((*configuration::init::config).decstr.with(cmd.key)) {
 					int8_t* desstr = bfstr;
 					do { *desstr++ -= 0x20; } while(*desstr);
