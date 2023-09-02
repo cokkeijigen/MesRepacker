@@ -362,15 +362,16 @@ namespace mes_helper::loader {
 		loader::write_clear();
 		std::string input_path(std::filesystem::is_directory(cur_file)
 			? cur_file.string() : cur_file.parent_path().string());
+		using namespace configuration::repacker::config;
 		char* bf_str = (char*)input_path.c_str();
-		int32_t bf_size = strlen(bf_str) + 24;
-		wr_buf.format_write("#InputPath\n%s\n\n", bf_size, bf_str);
+		int32_t bf_size = input_path.size() + strlen(path) + 24;
+		wr_buf.format_write("%s\n%s\n\n", bf_size, path, bf_str);
 		if (!configuration::init::is_not_convert) {
-			wr_buf.write_text("#UseCodePage\n936\n\n");
-			wr_buf.write_text("#Text-MinLength\n22\n\n");
-			wr_buf.write_text("#Text-MaxLength\n24\n\n");
-			wr_buf.write_text("#Before-Replaces\n[]:[]\n\n");
-			wr_buf.write_text("#After-Replaces\n[]:[]\n");
+			wr_buf.format_write("%s\n%d\n\n", strlen(cdpg) + 24, cdpg, 936);
+			wr_buf.format_write("%s\n%d\n\n", strlen(tmin) +  6, tmin,  22);
+			wr_buf.format_write("%s\n%d\n\n", strlen(tmax) +  6, tmax,  24);
+			wr_buf.format_write("%s\n[]:[]\n\n", strlen(bfrp) + 24, bfrp);
+			wr_buf.format_write("%s\n[]:[]\n\n", strlen(atrp) + 24, atrp);
 		}
 		loader::out_config_file = true;
 	}
