@@ -324,7 +324,7 @@ namespace mes_helper::loader {
 				continue;
 			}
 			if ((*configuration::init::config).str.with(cmd.key)) { // test
-				//continue;
+				continue;
 				//std::string str(buffer + cmd.pos + 1);
 				//std::cout << "key:" << std::hex << (int32_t)cmd.key << " " << str << std::endl;
 			}
@@ -365,11 +365,13 @@ namespace mes_helper::loader {
 		char* bf_str = (char*)input_path.c_str();
 		int32_t bf_size = strlen(bf_str) + 24;
 		wr_buf.format_write("#InputPath\n%s\n\n", bf_size, bf_str);
-		wr_buf.write_text("#UseCodePage\n936\n\n");
-		wr_buf.write_text("#Text-MinLength\n22\n\n");
-		wr_buf.write_text("#Text-MaxLength\n24\n\n");
-		wr_buf.write_text("#Before-Replaces\n[]:[]\n\n");
-		wr_buf.write_text("#After-Replaces\n[]:[]\n");
+		if (!configuration::init::is_not_convert) {
+			wr_buf.write_text("#UseCodePage\n936\n\n");
+			wr_buf.write_text("#Text-MinLength\n22\n\n");
+			wr_buf.write_text("#Text-MaxLength\n24\n\n");
+			wr_buf.write_text("#Before-Replaces\n[]:[]\n\n");
+			wr_buf.write_text("#After-Replaces\n[]:[]\n");
+		}
 		loader::out_config_file = true;
 	}
 
@@ -399,7 +401,7 @@ namespace mes_helper::loader {
 			if (out_config_file) {
 				if (std::filesystem::exists(path)) {
 					out_config_file = false;
-					path /= ".MesRepacker";
+					path /= configuration::repacker::config::name;
 					goto _out;
 				}
 			}

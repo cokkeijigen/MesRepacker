@@ -64,7 +64,7 @@ namespace file {
 
 	bool read_config_if_exists(std::string path) {
 		using namespace configuration::repacker::config;
-		return file::read_file(path.append(name), read_config);
+		return file::read_file(path + "\\" + name, read_config);
 	}
 
 	void run_replaces(std::string& o, std::string& n) {

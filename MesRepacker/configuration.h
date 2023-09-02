@@ -63,7 +63,7 @@ namespace configuration::repacker {
 		const char* tmax = u8"#Text-MaxLength";
 		const char* bfrp = u8"#Before-Replaces";
 		const char* atrp = u8"#After-Replaces";
-		const char* name = u8"\\.MesRepacker";
+		const char* name = u8".MesRepacker";
 		f r1 = [](uint8_t s) -> bool { return s == 1; };
 		f r2 = [](uint8_t s) -> bool { return s == 2; };
 		f r3 = [](uint8_t s) -> bool { return s == 3; };

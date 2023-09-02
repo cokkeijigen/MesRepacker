@@ -111,7 +111,6 @@ namespace worker {
 		}
 		else throw std::exception("Unknown error!");
 	}
-
 }
 
 int main(int argc, char* argv[]) {
