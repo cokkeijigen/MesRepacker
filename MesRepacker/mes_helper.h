@@ -391,17 +391,17 @@ namespace mes_helper::loader {
 	}
 
 	void out(std::filesystem::path path) {
-		using namespace configuration::init;
+		using namespace configuration;
 		if (is_import_text) {
-			path /= std::string((*config).name) + "_mes";
+			path /= std::string((*init::config).name) + "_mes";
 			if (out_path_create(path, ".mes")) goto _out;
 		}
-		else if(config) {
-			path /= std::string((*config).name) + "_text";
+		else if(init::config) {
+			path /= std::string((*init::config).name) + "_text";
 			if (out_config_file) {
 				if (std::filesystem::exists(path)) {
 					out_config_file = false;
-					path /= configuration::repacker::config::name;
+					path /= repacker::config::name;
 					goto _out;
 				}
 			}
