@@ -40,6 +40,7 @@ D:\xxxxx\xxxx\xxxx\MES
 |D.S.i.F. -Dal Segno-| dsif | 
 |Eternal Fantasy | ef | 
 |D.S. -Dal Segno- | ds | 
+|D.C.4 Plus Harmony 〜ダ・カーポ4〜 プラスハーモニー|dc4ph|
 |D.C.4 ～ダ・カーポ4～ | dc4|
 |D.C.III DreamDays|dc3dd|
 |D.C.III WithYou|dc3wy|
