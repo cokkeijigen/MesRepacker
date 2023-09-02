@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define _Version 1.1
+#define _Version 1.2
 #include "includes.h"
 
 namespace worker {
@@ -117,8 +117,8 @@ int main(int argc, char* argv[]) {
 	clock_t start_t = clock();
 	try {
 		if (argc == 2) { 
-			worker::init(argv[0], argv[1]);
 			configuration::mes::init();
+			worker::init(argv[0], argv[1]);
 			worker::on_handler_start();
 		}
 		else throw std::exception("Illegal parameter!!!");
