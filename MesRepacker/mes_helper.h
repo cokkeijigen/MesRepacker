@@ -15,10 +15,14 @@ namespace mes_helper::text {
 	uint32_t min_length = 22;
 	UTF8String begin_symbols(u8"。、？’”，！～】；：）」』");
 	UTF8String end_symbols  (u8"（(「『【‘“…");
+	bool enable_formater = true;
 
 	void config_init() {
 		using namespace configuration::repacker;
-		if (text_max_length > 0 && text_min_length > 0 && text_min_length <= text_max_length) {
+		if (text_min_length == -1 || text_max_length == -1) {
+			enable_formater = false;
+		}
+		else if (text_max_length > 0 && text_min_length > 0 && text_min_length <= text_max_length) {
 			mes_helper::text::max_length = text_max_length;
 			mes_helper::text::min_length = text_min_length;
 		}
@@ -46,7 +50,7 @@ namespace mes_helper::text {
 	}
 
 	void formater(const char* str, UTF8String* out_result_ptr, bool escape) {
-		if (!str || !out_result_ptr) return;
+		if (!enable_formater || !str || !out_result_ptr) return;
 		utf8str text(str), tmpstr, result;
 		__text_before_clear(text);
 		uint32_t length   = text.get_length();

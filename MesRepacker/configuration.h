@@ -48,9 +48,9 @@ namespace configuration::init {
 namespace configuration::repacker {
 	
 	std::string input_path;
-	uint32_t use_code_page = 936;
-	uint32_t text_max_length = 0;
-	uint32_t text_min_length = 0;
+	uint32_t use_code_page  = 936;
+	int32_t text_max_length = 0;
+	int32_t text_min_length = 0;
 	std::filesystem::path current_file;
 	std::map<std::string, std::string> befors_replaces;
 	std::map<std::string, std::string> after_replaces ;
@@ -95,9 +95,9 @@ namespace configuration::repacker {
 		catch (const std::exception&) {}
 	}
 
-	void set_min_length(const char* max) {
+	void set_min_length(const char* min) {
 		try {
-			text_min_length = std::stoi(max);
+			text_min_length = std::stoi(min);
 		}
 		catch (const std::exception&) {}
 	}
