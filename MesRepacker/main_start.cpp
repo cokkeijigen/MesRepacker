@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define _Version 1.2
+#define _Version 1.21
 #include "includes.h"
 
 namespace worker {
@@ -12,7 +12,7 @@ namespace worker {
 		using namespace configuration;
 		init::find_iput_gbk(exe_name);
 		init::find_not_convert(exe_name);
-		mes ::find_config(exe_name);
+		init::find_config(exe_name);
 	}
 
 	void init(const char* path1, const char* path2) {

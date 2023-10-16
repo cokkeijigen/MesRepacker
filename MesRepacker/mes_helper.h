@@ -172,36 +172,38 @@ namespace mes_helper::text_map {
 
 namespace mes_helper::instance {
 
-	FileHelper::ReadBuffer readbuffer;
-	std::vector<command>   cmd_array ;
 	uint32_t offset = 0;
+	int32_t block_start;
+	files::readbuffer   readbuffer;
+	std::vector<command> cmd_array;
 
-	bool select_config() {
-		if (configuration::init::config) {
-			using namespace configuration::init;
-			offset = (*config).offset(offset) + 3;
-			return true;
-		} else if (!configuration::mes::configs.empty()) {
-			using namespace configuration;
+	bool select_config_if_exists() {
+		uint16_t version = 0x00000;
+		uint8_t* data = readbuffer.data();
+		if (((uint32_t*)data)[1] == 0x3) {
+			instance::offset = ((uint32_t*)data)[0] * 6 + 4;
+			version = *(uint16_t*)(data + instance::offset);
+			instance::block_start = 1;
+			instance::offset += 3;
+		}
+		else {
+			instance::offset = ((uint32_t*)data)[0] * 4 + 4;
+			version = *(uint16_t*)(data + instance::offset);
+			instance::block_start = 0;
+			instance::offset += 2;
+		}
+		using namespace configuration;
+		if (!init::config && !mes::configs.empty()) {
 			for (mes_config& config : mes::configs) {
-				int32_t h_offset = config.offset(offset);
-				uint16_t head_t  = readbuffer.get_int16(h_offset);
-				*((uint8_t*)&head_t) ^= *(((uint8_t*)&head_t) + 1);
-				*(((uint8_t*)&head_t) + 1) ^= *((uint8_t*)&head_t);
-				*((uint8_t*)&head_t) ^= *(((uint8_t*)&head_t) + 1);
-				if (config.head_t == head_t) {
-					configuration::init::config = &config;
-					instance::offset = h_offset + 3;
-					return true;
-				}
+				if (config.version != version) continue;
+				configuration::init::config = &config;
 			}
 		}
-		return false;
+		return configuration::init::config;
 	}
 
 	void command_parsing() {
-		instance::offset = (uint32_t)readbuffer.get_int32(0);
-		if (select_config() && configuration::init::config) {
+		if (select_config_if_exists()) {
 			using namespace configuration;
 			mes_config& conf = (mes_config&)*init::config;
 			uint8_t* buffer  = (uint8_t*)readbuffer.data();
@@ -221,14 +223,14 @@ namespace mes_helper::instance {
 						n_cmd.len++;
 					} while (data_tmp);
 				}
-				else if (conf.str.with(n_cmd.key) || conf.decstr.with(n_cmd.key)) {
+				else if (conf.string.with(n_cmd.key) || conf.decstr.with(n_cmd.key)) {
 					buf_tmp = buffer + cur_pos;
 					do {
 						data_tmp = *buf_tmp++;
 						n_cmd.len++;
 					} while (data_tmp);
 				}
-				else if (conf.shortx4.with(n_cmd.key)) {
+				else if (conf.uint16x4.with(n_cmd.key)) {
 					n_cmd.len = 9;
 				}
 				else throw std::exception("Script parsing error!");
@@ -241,24 +243,20 @@ namespace mes_helper::instance {
 
 	void load(std::string path) {
 		instance::cmd_array.clear();
-		readbuffer.reader(path.c_str());
+		readbuffer.read(path.c_str());
 	}
 
-	void sbf_write(FileHelper::WriteBuffer& wr_buf, size_t bf_pos = 0, size_t bf_size = 0) {
-		if (!bf_pos && !bf_size) {
-			wr_buf.write((int8_t*)readbuffer.data(), 0, instance::offset);
-		}
-		else {
-			wr_buf.write((int8_t*)readbuffer.data(), bf_pos, bf_size);
-		}
+	void sbf_write(files::writebuffer& wr_buf, size_t bf_pos = 0, size_t bf_size = 0) {
+		uint8_t* data = (uint8_t*)readbuffer.data() + bf_pos;
+		wr_buf.write(data, bf_size != 0 ? bf_size : instance::offset);
 	}
 }
 
 namespace mes_helper::loader {
 
 	std::string text;
+	files::writebuffer wr_buf;
 	std::filesystem::path cur_file;
-	FileHelper::WriteBuffer wr_buf;
 	bool is_import_text  = false;
 	bool out_config_file = false;
 	int32_t str_write_count = 0;
@@ -320,14 +318,14 @@ namespace mes_helper::loader {
 				}
 				continue;
 			}
-			if (cmd.key != 0x0 && (*configuration::init::config).opt_undec == cmd.key) {
+			if (cmd.key != 0x0 && (*configuration::init::config).optundec == cmd.key) {
 				sstr text(buffer + cmd.pos + 1);
 				if (text.get_length()) {
 					wirte_text(cmd.pos, count++, text);
 				}
 				continue;
 			}
-			if ((*configuration::init::config).str.with(cmd.key)) { // test
+			if ((*configuration::init::config).string.with(cmd.key)) { // test
 				continue;
 				//std::string str(buffer + cmd.pos + 1);
 				//std::cout << "key:" << std::hex << (int32_t)cmd.key << " " << str << std::endl;
@@ -336,15 +334,15 @@ namespace mes_helper::loader {
 	}
 
 	void import_text() {
-		int32_t block_num = 1;
 		instance::sbf_write(wr_buf);
+		int32_t block_num = instance::block_start;
 		for (command& cmd : instance::cmd_array) {
 			if (text_map::get(cmd.pos, text)) {
-				wr_buf.write_int8(cmd.key);
-				int8_t* bfstr = (int8_t*)text.c_str();
+				wr_buf.write(&cmd.key, 1);
+				uint8_t* bfstr = (uint8_t*)text.c_str();
 				size_t length = text.length();
 				if ((*configuration::init::config).decstr.with(cmd.key)) {
-					int8_t* desstr = bfstr;
+					uint8_t* desstr = bfstr;
 					do { *desstr++ -= 0x20; } while(*desstr);
 				}
 				wr_buf.write(bfstr, length + 1);
@@ -355,9 +353,9 @@ namespace mes_helper::loader {
 			if (cmd.key == 0x3 || cmd.key == 0x4) {
 				int32_t block_pos = ++block_num * 4;
 				int32_t block_fg  = (*(int32_t*)(wr_buf.data() + block_pos));
-				int32_t bf_size   = (wr_buf.wbf_size() - instance::offset);
+				int32_t bf_size   = (wr_buf.size() - instance::offset);
 				block_fg = (block_fg & 0xff000000) | bf_size;
-				wr_buf.rewrite_int32(block_fg, block_pos);
+				wr_buf.rewrite(block_pos, (int8_t*)&block_fg, 4);
 			}
 		}
 	}
@@ -414,7 +412,7 @@ namespace mes_helper::loader {
 		}
 		throw std::exception("Failed to create file or The mes file version is not supported!");
 	_out:
-		wr_buf.out_file(path.string().c_str());
+		wr_buf.save(path.string().c_str());
 
 	}
 }

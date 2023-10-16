@@ -559,7 +559,7 @@ namespace StringHelper {
 			char* start = this->buffer.buffer;
 			char* end = start + c_len - 1;
 			bool is_start = false, is_end = false;
-			while (!(is_start && is_end) && start != end) {
+			while (!(is_start && is_end) && start <= end) {
 				if (!is_start && *start != 0x20 && *start != '\n' && *start != '\r') {
 					is_start = true;
 				}

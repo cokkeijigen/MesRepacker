@@ -2,19 +2,19 @@
 
 namespace file {
 
-	FileHelper  ::TextReader file_tr;
 	StringHelper::UTF8String text;
+	files::textrbfr textrbfr;
 	uint8_t read_state = 0;
 
 	bool load_file(std::string path) {
-		return file::file_tr.reader(path.c_str()).has_data();
+		return !file::textrbfr.load(path.c_str()).empty();
 	}
 
 	template <typename text_reader>
 	bool read_file(std::string path, text_reader reader) {
 		file::read_state = 0;
 		bool is_readed   = file::load_file(path);
-		if ( is_readed ) { file_tr.foreach(reader); }
+		if ( is_readed ) { textrbfr.foreach(reader); }
 		return is_readed;
 	}
 
@@ -43,7 +43,7 @@ namespace file {
 			file::read_state = 6;
 		}
 		else if (repacker::config::r1(file::read_state)) {
-			repacker::input_path.assign(str);
+			repacker::input_path.assign(text.get_c_str());
 		}
 		else if (repacker::config::r2(file::read_state)) {
 			repacker::set_code_pege(text.get_c_str());
@@ -75,7 +75,7 @@ namespace file {
 		using namespace configuration;
 		mes_helper::text_map::init();
 		int32_t position = 0, split = -1;
-		file_tr.foreach([&](int, char* str) -> void {
+		textrbfr.foreach([&](int, char* str) -> void {
 			file::text.assign(str).trim();
 			if (!text.get_length() || !text.get_c_strlen()) {
 				file::read_state = 0;
