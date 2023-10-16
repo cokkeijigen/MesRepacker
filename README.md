@@ -29,9 +29,9 @@ D:\xxxxx\xxxx\xxxx\MES
 
 ```
 ***
-默认情况下，程序会将sj编码转换成utf8然后导出  
-此外还支持gbk转utf8，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
-如果不需要转换，将exe的重命名加上`-nsc`，例如`MesRepacker-nsc.exe`  
+默认情况下，程序会将`sjis`编码转换成`utf8`然后导出  
+此外还支持`gbk`转`utf8`，需要exe的重命名加上`-igbk`，例如`MesRepacker-igbk.exe`  
+如果不需要转换，将`exe`的重命名加上`-nsc`，例如`MesRepacker-nsc.exe`  
 
 程序默认是自动选择mes版本，但是你可以手动选择  
 将exe重命名加上`-s版本简称`，例如`MesRepacker-sdc4.exe`// 配置为dc4
