@@ -313,7 +313,7 @@ namespace mes_helper::loader {
 				if (text.get_length()) {
 					const char* bf_str = text.get_c_str();
 					char* desstr = (char*)bf_str;
-					do { *desstr++ += 0x20; } while (*desstr);
+					while (*desstr) { *desstr++ += 0x20; }
 					wirte_text(cmd.pos, count++, text);
 				}
 				continue;
@@ -343,7 +343,7 @@ namespace mes_helper::loader {
 				size_t length = text.length();
 				if ((*configuration::init::config).decstr.with(cmd.key)) {
 					uint8_t* desstr = bfstr;
-					do { *desstr++ -= 0x20; } while(*desstr);
+					while (*desstr) { *desstr++ -= 0x20; }
 				}
 				wr_buf.write(bfstr, length + 1);
 			}
