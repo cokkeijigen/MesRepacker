@@ -203,7 +203,7 @@ namespace mes_helper::instance {
 	}
 
 	void command_parsing() {
-		if (select_config_if_exists()) {
+		if (!readbuffer.empty() && select_config_if_exists()) {
 			using namespace configuration;
 			mes_config& conf = (mes_config&)*init::config;
 			uint8_t* buffer  = (uint8_t*)readbuffer.data();
