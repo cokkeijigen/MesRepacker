@@ -181,13 +181,13 @@ namespace mes_helper::instance {
 		uint16_t version = 0x00000;
 		uint8_t* data = readbuffer.data();
 		if (((uint32_t*)data)[1] == 0x3) {
-			instance::offset = ((uint32_t*)data)[0] * 6 + 4;
+			instance::offset = *((uint32_t*)data) * 6 + 4;
 			version = *(uint16_t*)(data + instance::offset);
 			instance::block_start = 1;
 			instance::offset += 3;
 		}
 		else {
-			instance::offset = ((uint32_t*)data)[0] * 4 + 4;
+			instance::offset = *((uint32_t*)data) * 4 + 4;
 			version = *(uint16_t*)(data + instance::offset);
 			instance::block_start = 0;
 			instance::offset += 2;
