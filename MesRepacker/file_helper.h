@@ -99,11 +99,12 @@ namespace files {
         size_t exsize;
         size_t initsz;
     private:
-        void initialization() {
+        void initialize(bool init) {
             if (buffer) delete[] buffer;
-            buffer = new uint8_t[initsz];
             bfsize = initsz;
             length = 0x00;
+            if (!init) return;
+            buffer = new uint8_t[initsz];
         }
 
         void expandbuffer(size_t bfsz) {
@@ -126,8 +127,9 @@ namespace files {
     public:
         writebuffer() : writebuffer(1024, 500) {}
         writebuffer(size_t initsz, size_t exsize) : initsz(initsz), exsize(exsize) {
-            this->initialization();
+            this->initialize(true);
         }
+        ~writebuffer() { this->initialize(false); }
 
         writebuffer& write(const uint8_t* buf, size_t bfsz) {
             this->expandbuffer(bfsz);
@@ -168,7 +170,7 @@ namespace files {
         }
 
         writebuffer& clear() {
-            this->initialization();
+            if (length) this->initialize(true);
             return *this;
         }
     };
