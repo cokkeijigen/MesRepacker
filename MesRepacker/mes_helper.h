@@ -294,10 +294,10 @@ namespace mes_helper::loader {
 			using namespace charset_helper;
 			converts(str, is_input_gbk ? 936 : 932, 65001);
 			const char* bf_str = str.get_c_str();
-			int32_t bf_size = strlen(bf_str) + 24;
-			wr_buf.format_write(u8"#0x%x\n", 24, pos);
-			wr_buf.format_write(u8"★◎  %d  ◎★//%s\n", bf_size, count_num, bf_str);
-			wr_buf.format_write(u8"★◎  %d  ◎★%s\n\n", bf_size, count_num, bf_str);
+			int32_t bf_size = strlen(bf_str) + 0x30;
+			wr_buf.format_write(u8"#0x%X\n", 0x15, pos);
+			wr_buf.format_write(u8"★◎  %03d  ◎★//%s\n", bf_size, count_num, bf_str);
+			wr_buf.format_write(u8"★◎  %03d  ◎★%s\n\n", bf_size, count_num, bf_str);
 		}
 	}
 

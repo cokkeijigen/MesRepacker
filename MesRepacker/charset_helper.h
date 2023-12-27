@@ -11,7 +11,7 @@ namespace charset_helper {
             char* psText = new char[dwNum + 1];
             WideCharToMultiByte(n_cdpg, 0, dst, -1, psText, dwNum, 0, 0);
             str.assign(psText);
-            delete[]dst, delete[]psText;
+            delete[] dst, delete[] psText;
         }
     }
 
